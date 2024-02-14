@@ -18,7 +18,7 @@
         tools:targetApi="33">
 
         <activity
-            android:name=".ui.mainactivity.MainActivity"
+            android:name=".ui.screens.signup.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,8 +26,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.screens.signup.AuthActivity" />
-        <activity android:name=".ui.screens.myprofile.MyProfileActivity" />
+        <activity android:name=".ui.mainactivity.MainActivity" />
 
     </application>
 </manifest>

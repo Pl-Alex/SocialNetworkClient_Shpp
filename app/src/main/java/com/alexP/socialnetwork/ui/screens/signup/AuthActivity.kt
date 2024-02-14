@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.alexP.socialnetwork.databinding.ActivityAuthBinding
 import com.alexP.socialnetwork.ui.base.BaseActivity
-import com.alexP.socialnetwork.ui.screens.myprofile.MyProfileActivity
+import com.alexP.socialnetwork.ui.mainactivity.MainActivity
 import com.alexP.socialnetwork.utils.getValidationResultMessage
 import com.alexp.datastore.DataStoreProvider
 import com.alexp.textvalidation.validator.base.ValidationResult
@@ -28,10 +28,6 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setListeners()
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 vm.authState.collect { authState ->
@@ -41,6 +37,9 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>() {
                 }
             }
         }
+
+        super.onCreate(savedInstanceState)
+        setListeners()
     }
 
     private fun setListeners() {
@@ -89,7 +88,7 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>() {
     }
 
     private fun navToNextScreen() {
-        val intent = Intent(this, MyProfileActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         finish()
     }

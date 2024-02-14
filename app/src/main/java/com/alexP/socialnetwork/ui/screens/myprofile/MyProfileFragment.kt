@@ -1,27 +1,27 @@
 package com.alexP.socialnetwork.ui.screens.myprofile
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.activity.viewModels
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.alexP.socialnetwork.databinding.ActivityMyProfileBinding
-import com.alexP.socialnetwork.ui.screens.signup.AuthActivity
-import com.alexP.socialnetwork.ui.base.BaseActivity
+import com.alexP.socialnetwork.databinding.FragmentMyprofileBinding
+import com.alexP.socialnetwork.ui.base.BaseFragment
 import com.alexP.socialnetwork.utils.loadCircularImage
 import com.alexp.datastore.DataStoreProvider
 import kotlinx.coroutines.launch
 
-class MyProfileActivity : BaseActivity<ActivityMyProfileBinding>() {
+class MyProfileFragment : BaseFragment<FragmentMyprofileBinding>() {
 
 
     private val vm: MyProfileViewModel by viewModels{
-        MyProfileViewModel.createFactory(DataStoreProvider(this))
+        MyProfileViewModel.createFactory(DataStoreProvider(requireContext()))
     }
-
-    override fun inflate(inflater: LayoutInflater): ActivityMyProfileBinding {
-        return ActivityMyProfileBinding.inflate(inflater)
+    override fun inflate(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): FragmentMyprofileBinding {
+        return FragmentMyprofileBinding.inflate(inflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +45,6 @@ class MyProfileActivity : BaseActivity<ActivityMyProfileBinding>() {
 
     private fun onLogOutButtonPressed() {
         vm.cleanStorage()
-        val intent = Intent(this, AuthActivity::class.java)
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-        finish()
     }
 
     companion object {

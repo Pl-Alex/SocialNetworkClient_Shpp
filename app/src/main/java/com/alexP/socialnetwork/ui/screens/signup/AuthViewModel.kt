@@ -30,6 +30,7 @@ class AuthViewModel(
                     isAutologin = email.isNotEmpty() && password.isNotEmpty()
                 )
             }
+            // Is it necessary to update the state here?
             dataStore.getCredentials().collect { (email, password) ->
                 _authState.update { it.copy(isAutologin = email.isNotEmpty() && password.isNotEmpty()) }
             }
