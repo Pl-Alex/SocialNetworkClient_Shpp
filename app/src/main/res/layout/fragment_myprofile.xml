@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorBackgroundFloating"
+    android:background="?attr/colorPrimary"
     tools:context=".ui.screens.myprofile.MyProfileFragment">
 
     <View
+        android:id="@+id/view_topBackground"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?attr/colorPrimary"
@@ -15,6 +16,17 @@
         app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_bottomBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/colorBackgroundFloating"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_topBackground" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideline"

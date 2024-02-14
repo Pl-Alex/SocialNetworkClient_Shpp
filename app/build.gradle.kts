@@ -57,6 +57,7 @@ dependencies {
 
     // AndroidX AppCompat for backward-compatible UI features
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.viewpager2)
 
     // Material Design components for modern UI
     implementation(libs.material)

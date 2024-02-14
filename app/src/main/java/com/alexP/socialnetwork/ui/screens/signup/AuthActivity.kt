@@ -68,6 +68,8 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>() {
 
         if (binding.checkBoxRemember.isChecked) {
             vm.saveCredentials(emailText, passwordText)
+        }else{
+            vm.saveCredentials(emailText, "")
         }
 
         onNavigate()
@@ -89,8 +91,8 @@ class AuthActivity : BaseActivity<ActivityAuthBinding>() {
 
     private fun navToNextScreen() {
         val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         finish()
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 
     private fun validateEmail(): Boolean {

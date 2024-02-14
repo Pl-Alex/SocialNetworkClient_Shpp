@@ -22,6 +22,7 @@ import com.alexP.socialnetwork.databinding.FragmentContactsBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
 import com.alexP.socialnetwork.ui.screens.contacts.adapter.ContactsAdapter
 import com.alexP.socialnetwork.ui.screens.contacts.adapter.IContactActionListener
+import com.alexP.socialnetwork.ui.screens.viewpager.ViewPagerFragmentDirections
 import com.alexP.socialnetwork.utils.SpacingItemDecorator
 import com.alexP.socialnetwork.utils.applyWindowInsets
 import com.alexP.socialnetwork.utils.enableTransitionAnimation
@@ -75,6 +76,10 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
         binding.recyclerView.doOnPreDraw {
             startPostponedEnterTransition()
         }
+
+        binding.addContactButton.setOnClickListener {
+            findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragmentToAddContactFragment())
+        }
     }
 
     private fun setRecyclerView() {
@@ -85,7 +90,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
 
             override fun onContactDetails(contact: Contact, imageView: ImageView) {
                 val action =
-                    ContactsFragmentDirections.actionContactsFragmentToContactsDetailsFragment(
+                    ViewPagerFragmentDirections.actionViewPagerFragmentToContactsDetailsFragment(
                         contact.photo,
                         contact.fullName,
                         contact.address,

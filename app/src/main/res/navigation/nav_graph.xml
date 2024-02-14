@@ -3,17 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/contactsFragment">
+    app:startDestination="@id/viewPagerFragment">
 
     <fragment
         android:id="@+id/contactsFragment"
         android:name="com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment"
         android:label="fragment_contacts"
-        tools:layout="@layout/fragment_contacts" >
-        <action
-            android:id="@+id/action_contactsFragment_to_contactsDetailsFragment"
-            app:destination="@id/contactsDetailsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_contacts" />
     <fragment
         android:id="@+id/contactsDetailsFragment"
         android:name="com.alexP.socialnetwork.ui.screens.contactsdetails.ContactsDetailsFragment"
@@ -32,4 +28,31 @@
             android:name="career"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="com.alexP.socialnetwork.ui.screens.viewpager.ViewPagerFragment"
+        android:label="ViewPagerFragment" >
+        <action
+            android:id="@+id/action_viewPagerFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_contactsDetailsFragment"
+            app:destination="@id/contactsDetailsFragment" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.alexP.socialnetwork.ui.screens.myprofile.MyProfileFragment"
+        android:label="fragment_myprofile"
+        tools:layout="@layout/fragment_myprofile" />
+    <dialog
+        android:id="@+id/addContactFragment"
+        android:name="com.alexP.socialnetwork.ui.screens.addcontact.AddContactFragment"
+        android:label="fragment_dialog_add_contact"
+        tools:layout="@layout/fragment_dialog_add_contact" />
 </navigation>

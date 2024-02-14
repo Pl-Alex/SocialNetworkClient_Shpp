@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alexP.socialnetwork.databinding.FragmentDialogAddContactBinding
@@ -20,9 +18,7 @@ import com.alexp.textvalidation.validator.base.ValidationResult
 import kotlinx.coroutines.launch
 
 
-class AddContactFragment(
-    private val onSaveAction: (Contact) -> Unit,
-) : DialogFragment() {
+class AddContactFragment : DialogFragment() {
 
     private lateinit var binding: FragmentDialogAddContactBinding
     private val vm: AddContactViewModel by viewModels()
@@ -135,7 +131,12 @@ class AddContactFragment(
             address = binding.inputEditTextAddress.text.toString(),
             dateOfBirth = binding.inputEditTextDateOfBirth.text.toString()
         )
-        onSaveAction(contact)
+
+        parentFragmentManager.setFragmentResult(
+            "requestKey",
+            Bundle()
+        )
+
         dismiss()
     }
 
@@ -149,12 +150,4 @@ class AddContactFragment(
 
         return !(isUsernameValid && isCareerValid && isEmailValid && isPhoneValid && isAddressValid && isDateOfBirthValid)
     }
-}
-
-class MyFragmentFactory(private val onSaveAction: (Contact) -> Unit) : FragmentFactory() {
-    override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
-        when (loadFragmentClass(classLoader, className)) {
-            AddContactFragment::class.java -> AddContactFragment(onSaveAction)
-            else -> super.instantiate(classLoader, className)
-        }
 }
