@@ -21,6 +21,7 @@ import com.alexP.socialnetwork.ui.base.BaseFragment
 import com.alexP.socialnetwork.ui.screens.contacts.adapter.ContactsAdapter
 import com.alexP.socialnetwork.ui.screens.contacts.adapter.IContactActionListener
 import com.alexP.socialnetwork.utils.SpacingItemDecorator
+import com.alexP.socialnetwork.utils.applyWindowInsets
 import com.alexp.contactsprovider.Contact
 import com.google.android.material.snackbar.Snackbar
 
@@ -59,8 +60,8 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 //        supportFragmentManager.fragmentFactory = MyFragmentFactory(onSaveAction)
+        binding.root.applyWindowInsets()
         super.onViewCreated(view, savedInstanceState)
-
         setRecyclerView()
         setListeners()
         tryToLoadContactsFromDevice()

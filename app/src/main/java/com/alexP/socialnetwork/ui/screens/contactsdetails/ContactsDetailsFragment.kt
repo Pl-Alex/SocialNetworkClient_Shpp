@@ -1,22 +1,28 @@
 package com.alexP.socialnetwork.ui.screens.contactsdetails
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.fragment.app.Fragment
-import com.alexP.socialnetwork.R
+import android.view.ViewGroup
 import com.alexP.socialnetwork.databinding.FragmentContactDetailsBinding
+import com.alexP.socialnetwork.ui.base.BaseFragment
+import com.alexP.socialnetwork.utils.applyWindowInsets
 
-class ContactsDetailsFragment : Fragment(R.layout.fragment_contact_details) {
+class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>(){
 
-    private lateinit var binding: FragmentContactDetailsBinding
+    override fun inflate(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+    ): FragmentContactDetailsBinding {
+        return FragmentContactDetailsBinding.inflate(inflater)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.root.applyWindowInsets()
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentContactDetailsBinding.bind(view)
 
         binding.topBar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-
     }
 }
