@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -21,6 +22,7 @@ import com.alexP.socialnetwork.ui.base.BaseFragment
 import com.alexP.socialnetwork.ui.screens.contacts.adapter.ContactsAdapter
 import com.alexP.socialnetwork.ui.screens.contacts.adapter.IContactActionListener
 import com.alexP.socialnetwork.utils.SpacingItemDecorator
+import com.alexP.socialnetwork.utils.applyWindowInsets
 import com.alexp.contactsprovider.Contact
 import com.google.android.material.snackbar.Snackbar
 
@@ -59,8 +61,8 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 //        supportFragmentManager.fragmentFactory = MyFragmentFactory(onSaveAction)
+        binding.root.applyWindowInsets()
         super.onViewCreated(view, savedInstanceState)
-
         setRecyclerView()
         setListeners()
         tryToLoadContactsFromDevice()
@@ -86,7 +88,12 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
             }
 
             override fun onContactDetails(contact: Contact) {
-                findNavController().navigate(R.id.action_contactsFragment_to_contactsDetailsFragment)
+                val bundle = bundleOf(
+                    FULL_NAME to contact.fullName,
+                    CAREER to contact.career,
+                    HOME_ADDRESS to contact.address,
+                    PHOTO to contact.photo)
+                findNavController().navigate(R.id.action_contactsFragment_to_contactsDetailsFragment, bundle)
             }
         })
 
@@ -179,6 +186,13 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
                 )
             }
         }
+    }
+
+    companion object {
+        val FULL_NAME = "fullname"
+        val CAREER = "career"
+        val HOME_ADDRESS = "homeaddress"
+        val PHOTO = "photo"
     }
 
 }
