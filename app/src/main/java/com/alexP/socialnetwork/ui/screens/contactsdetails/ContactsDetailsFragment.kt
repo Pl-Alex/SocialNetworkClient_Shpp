@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.alexP.socialnetwork.databinding.FragmentContactDetailsBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
 import com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment.Companion.CAREER
@@ -12,7 +14,9 @@ import com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment.Companion.FU
 import com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment.Companion.HOME_ADDRESS
 import com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment.Companion.PHOTO
 import com.alexP.socialnetwork.utils.applyWindowInsets
+import com.alexP.socialnetwork.utils.enableTransitionAnimation
 import com.alexP.socialnetwork.utils.loadCircularImage
+import java.util.concurrent.TimeUnit
 
 class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>(){
 
@@ -25,10 +29,18 @@ class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>(){
         return FragmentContactDetailsBinding.inflate(inflater)
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        enableTransitionAnimation()
+        postponeEnterTransition(1000, TimeUnit.MILLISECONDS)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.root.applyWindowInsets()
         super.onViewCreated(view, savedInstanceState)
-
+        binding.root.applyWindowInsets()
         observeViewModel()
 
         arguments?.let {
@@ -41,7 +53,11 @@ class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>(){
         }
 
         binding.topBar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().popBackStack()
+        }
+
+        binding.root.doOnPreDraw {
+            startPostponedEnterTransition()
         }
     }
 

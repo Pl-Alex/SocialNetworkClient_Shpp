@@ -1,10 +1,12 @@
 package com.alexP.socialnetwork.utils
 
+import android.transition.TransitionInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import com.alexP.socialnetwork.R
 import com.alexp.textvalidation.validator.base.ValidationResult
 import com.bumptech.glide.Glide
@@ -54,4 +56,10 @@ fun getValidationResultMessage(validationResult: ValidationResult): Int? {
         ValidationResult.MIN_LENGTH_FAILED -> R.string.text_validation_error_min_pass_length
         ValidationResult.MAX_LENGTH_FAILED -> R.string.text_validation_error_max_pass_length
     }
+}
+
+fun Fragment.enableTransitionAnimation() {
+    val anim =
+        TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+    sharedElementEnterTransition = anim
 }

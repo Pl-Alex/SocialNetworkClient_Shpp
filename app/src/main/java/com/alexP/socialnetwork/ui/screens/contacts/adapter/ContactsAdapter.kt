@@ -33,26 +33,32 @@ class ContactsAdapter(
                 textViewContactFullName.text = contact.fullName
                 textViewContactCareer.text = contact.career
                 imageViewContactImage.loadCircularImage(contact.photo)
+                imageViewContactImage.transitionName = IMAGEVIEW_TRANSITION_NAME_PREFIX + contact.id.toString()
 
-                binding.root.setOnClickListener{
-                    userActionListener.onContactDetails(contact)
+                binding.root.setOnClickListener {
+                    userActionListener.onContactDetails(contact, binding.imageViewContactImage)
                 }
-                binding.buttonTrash.setOnClickListener{
+                binding.buttonTrash.setOnClickListener {
                     userActionListener.onContactDelete(contact)
                 }
             }
         }
     }
-}
 
-class ContactsDiffCallback : DiffUtil.ItemCallback<Contact>() {
+    class ContactsDiffCallback : DiffUtil.ItemCallback<Contact>() {
 
-    override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem.id == newItem.id
+        override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+            return oldItem == newItem
+        }
+
     }
 
-    override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem == newItem
+    companion object{
+        const val IMAGEVIEW_TRANSITION_NAME_PREFIX = "imageview_contact"
     }
-
 }
+

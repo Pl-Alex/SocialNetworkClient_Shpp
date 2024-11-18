@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,13 +25,12 @@ import com.alexP.socialnetwork.ui.screens.contacts.adapter.ContactsAdapter
 import com.alexP.socialnetwork.ui.screens.contacts.adapter.IContactActionListener
 import com.alexP.socialnetwork.utils.SpacingItemDecorator
 import com.alexP.socialnetwork.utils.applyWindowInsets
+import com.alexP.socialnetwork.utils.enableTransitionAnimation
 import com.alexp.contactsprovider.Contact
 import com.google.android.material.snackbar.Snackbar
 
 
 class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
-
-    private lateinit var adapter: ContactsAdapter
 
     private val vm: ContactsViewModel by viewModels {
         ContactsViewModel.createFactory((requireContext().applicationContext as App).contactService)
@@ -55,45 +56,48 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
         return FragmentContactsBinding.inflate(inflater, container, false)
     }
 
-    private val onSaveAction: (Contact) -> Unit = { contact: Contact ->
-        vm.addContact(contact)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        enableTransitionAnimation()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        supportFragmentManager.fragmentFactory = MyFragmentFactory(onSaveAction)
-        binding.root.applyWindowInsets()
+        postponeEnterTransition()
         super.onViewCreated(view, savedInstanceState)
-        setRecyclerView()
-        setListeners()
-        tryToLoadContactsFromDevice()
-    }
 
-    private fun setListeners() {
-        binding.addContactButton.setOnClickListener {
-            showAddContactDialog()
-        }
-        binding.topAppBar.setNavigationOnClickListener {
-//            startActivity(
-//                Intent(this, AuthActivity::class.java),
-//                ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-//            )
-//            finish()
+        binding.root.applyWindowInsets()
+        setRecyclerView()
+        tryToLoadContactsFromDevice()
+
+        binding.recyclerView.doOnPreDraw {
+            startPostponedEnterTransition()
         }
     }
 
     private fun setRecyclerView() {
-        adapter = ContactsAdapter(object : IContactActionListener {
+        val adapter = ContactsAdapter(object : IContactActionListener {
             override fun onContactDelete(contact: Contact) {
                 deleteContact(contact)
             }
 
-            override fun onContactDetails(contact: Contact) {
+            override fun onContactDetails(contact: Contact, imageView: ImageView) {
                 val bundle = bundleOf(
                     FULL_NAME to contact.fullName,
                     CAREER to contact.career,
                     HOME_ADDRESS to contact.address,
-                    PHOTO to contact.photo)
-                findNavController().navigate(R.id.action_contactsFragment_to_contactsDetailsFragment, bundle)
+                    PHOTO to contact.photo
+                )
+                val extras = FragmentNavigatorExtras(imageView to "contacts_details")
+                findNavController().navigate(
+                    R.id.action_contactsFragment_to_contactsDetailsFragment,
+                    bundle,
+                    null,
+                    extras
+                )
             }
         })
 
@@ -124,7 +128,6 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
             }
         }).attachToRecyclerView(binding.recyclerView)
 
-
         val layoutManager = LinearLayoutManager(context)
 
         binding.recyclerView.layoutManager = layoutManager
@@ -135,22 +138,8 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
                 resources.getDimensionPixelSize(R.dimen.contacts_recyclerView_vertical_spacing)
             )
         )
-
-        val itemAnimator = binding.recyclerView.itemAnimator
-        if (itemAnimator is DefaultItemAnimator) {
-            itemAnimator.supportsChangeAnimations = false
-        }
     }
 
-    private fun showAddContactDialog() {
-//        val fragmentManager = supportFragmentManager
-//        val transaction = fragmentManager.beginTransaction()
-//        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//        transaction
-//            .add(android.R.id.content, AddContactFragment::class.java, null)
-//            .addToBackStack(null)
-//        transaction.commit()
-    }
 
     private fun deleteContact(contact: Contact) {
         vm.deleteContact(contact)
@@ -189,10 +178,10 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
     }
 
     companion object {
-        val FULL_NAME = "fullname"
-        val CAREER = "career"
-        val HOME_ADDRESS = "homeaddress"
-        val PHOTO = "photo"
+        const val FULL_NAME = "fullname"
+        const val CAREER = "career"
+        const val HOME_ADDRESS = "homeaddress"
+        const val PHOTO = "photo"
     }
 
 }

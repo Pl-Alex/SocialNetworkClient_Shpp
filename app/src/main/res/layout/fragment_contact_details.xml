@@ -75,6 +75,7 @@
         android:layout_width="@dimen/my_profile_picture_size"
         android:layout_height="@dimen/my_profile_picture_size"
         android:scaleType="centerCrop"
+        android:transitionName="contacts_details"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topbar_layout"
