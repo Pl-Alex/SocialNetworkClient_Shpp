@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -85,19 +84,15 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
             }
 
             override fun onContactDetails(contact: Contact, imageView: ImageView) {
-                val bundle = bundleOf(
-                    FULL_NAME to contact.fullName,
-                    CAREER to contact.career,
-                    HOME_ADDRESS to contact.address,
-                    PHOTO to contact.photo
-                )
+                val action =
+                    ContactsFragmentDirections.actionContactsFragmentToContactsDetailsFragment(
+                        contact.photo,
+                        contact.fullName,
+                        contact.address,
+                        contact.career
+                    )
                 val extras = FragmentNavigatorExtras(imageView to "contacts_details")
-                findNavController().navigate(
-                    R.id.action_contactsFragment_to_contactsDetailsFragment,
-                    bundle,
-                    null,
-                    extras
-                )
+                findNavController().navigate(action, extras)
             }
         })
 
@@ -165,7 +160,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
                 requireContext(),
                 Manifest.permission.READ_CONTACTS
             ),
-            -> {
+                -> {
                 loadContactsFromDevice()
             }
 
@@ -175,13 +170,6 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
                 )
             }
         }
-    }
-
-    companion object {
-        const val FULL_NAME = "fullname"
-        const val CAREER = "career"
-        const val HOME_ADDRESS = "homeaddress"
-        const val PHOTO = "photo"
     }
 
 }

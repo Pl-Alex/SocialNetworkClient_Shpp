@@ -18,5 +18,18 @@
         android:id="@+id/contactsDetailsFragment"
         android:name="com.alexP.socialnetwork.ui.screens.contactsdetails.ContactsDetailsFragment"
         android:label="fragment_contact_details"
-        tools:layout="@layout/fragment_contact_details" />
+        tools:layout="@layout/fragment_contact_details" >
+        <argument
+            android:name="photo"
+            app:argType="string" />
+        <argument
+            android:name="full_name"
+            app:argType="string" />
+        <argument
+            android:name="address"
+            app:argType="string" />
+        <argument
+            android:name="career"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -7,20 +7,18 @@ import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.alexP.socialnetwork.databinding.FragmentContactDetailsBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
-import com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment.Companion.CAREER
-import com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment.Companion.FULL_NAME
-import com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment.Companion.HOME_ADDRESS
-import com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment.Companion.PHOTO
 import com.alexP.socialnetwork.utils.applyWindowInsets
 import com.alexP.socialnetwork.utils.enableTransitionAnimation
 import com.alexP.socialnetwork.utils.loadCircularImage
 import java.util.concurrent.TimeUnit
 
-class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>(){
+class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>() {
 
     private val vm: ContactsDetailsViewModel by viewModels()
+    private val args: ContactsDetailsFragmentArgs by navArgs()
 
     override fun inflate(
         inflater: LayoutInflater,
@@ -38,19 +36,18 @@ class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>(){
         postponeEnterTransition(1000, TimeUnit.MILLISECONDS)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.root.applyWindowInsets()
         observeViewModel()
 
-        arguments?.let {
-            vm.setContactDetails(
-                it.getString(FULL_NAME, ""),
-                it.getString(CAREER, ""),
-                it.getString(HOME_ADDRESS, ""),
-                it.getString(PHOTO, "")
-            )
-        }
+        vm.setContactDetails(
+            args.fullName,
+            args.career,
+            args.address,
+            args.photo
+        )
 
         binding.topBar.setNavigationOnClickListener {
             findNavController().popBackStack()
