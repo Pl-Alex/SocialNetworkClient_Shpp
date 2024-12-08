@@ -48,5 +48,6 @@
     <string name="search">search</string>
     <string name="profile">Profile</string>
     <string name="message">message</string>
+    <string name="contacts_deleted">Selected contacts are deleted</string>
 
 </resources>

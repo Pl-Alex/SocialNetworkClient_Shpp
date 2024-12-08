@@ -1,70 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/item_contact_frame"
+    android:padding="8dp"
     app:cardCornerRadius="6dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radioButton_contact"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/frame"
-        android:padding="8dp">
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:visibility="gone"
+        android:button="@drawable/radiobutton_multiselect"
+        app:buttonTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView_contactImage"
-            android:layout_width="@dimen/item_contact_contact_image_size"
-            android:layout_height="@dimen/item_contact_contact_image_size"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_contact_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+    <ImageView
+        android:id="@+id/imageView_contactImage"
+        android:layout_width="@dimen/item_contact_contact_image_size"
+        android:layout_height="@dimen/item_contact_contact_image_size"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_contact_image"
+        app:layout_constraintStart_toEndOf="@id/radioButton_contact"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/textView_contact_full_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/item_contact_textView_contact_name_surname_margin_start"
-            android:lines="1"
-            android:text="@string/item_contact_name_surname"
-            android:textAppearance="@style/TextAppearance.Assignment1.LabelLarge"
-            android:textColor="?attr/colorOnSurface"
-            app:layout_constraintBottom_toTopOf="@id/textView_contact_career"
-            app:layout_constraintEnd_toStartOf="@id/button_trash"
-            app:layout_constraintStart_toEndOf="@id/imageView_contactImage"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+    <TextView
+        android:id="@+id/textView_contact_full_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_contact_textView_contact_name_surname_margin_start"
+        android:lines="1"
+        android:text="@string/item_contact_name_surname"
+        android:textAppearance="@style/TextAppearance.Assignment1.LabelLarge"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintBottom_toTopOf="@id/textView_contact_career"
+        app:layout_constraintEnd_toStartOf="@id/button_trash"
+        app:layout_constraintStart_toEndOf="@id/imageView_contactImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView
-            android:id="@+id/textView_contact_career"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:lines="1"
-            android:text="@string/item_contact_career"
-            android:textAppearance="@style/TextAppearance.Assignment1.BodyMedium"
-            android:textColor="?attr/colorOutlineVariant"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/button_trash"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@id/textView_contact_full_name"
-            app:layout_constraintTop_toBottomOf="@id/textView_contact_full_name" />
+    <TextView
+        android:id="@+id/textView_contact_career"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:text="@string/item_contact_career"
+        android:textAppearance="@style/TextAppearance.Assignment1.BodyMedium"
+        android:textColor="?attr/colorOutlineVariant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_trash"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/textView_contact_full_name"
+        app:layout_constraintTop_toBottomOf="@id/textView_contact_full_name" />
 
-        <ImageButton
-            android:id="@+id/button_trash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:clickable="true"
-            android:contentDescription="@string/item_contact_delete_contact"
-            android:focusable="true"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:src="@drawable/ic_trash"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton
+        android:id="@+id/button_trash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:clickable="true"
+        android:contentDescription="@string/item_contact_delete_contact"
+        android:focusable="true"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_trash"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

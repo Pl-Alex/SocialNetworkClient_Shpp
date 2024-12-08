@@ -33,4 +33,5 @@
     <string name="contact_deleted">Контакт видалено</string>
     <string name="contacts_activity_add_contacts">Додати контакт</string>
     <string name="search">Пошук</string>
+    <string name="contacts_deleted">Selected contacts are deleted</string>
 </resources>

@@ -72,6 +72,10 @@ class ContactsViewModel(
         }
     }
 
+    fun deleteContacts(contacts: List<Contact>) {
+        contacts.forEach { deleteContact(it) }
+    }
+
     companion object {
         fun createFactory(contactsServices: ContactsProvider): ViewModelProvider.Factory =
             viewModelFactory {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurfaceVariant"
+    android:background="@color/light_orange"
     tools:context=".ui.screens.contacts.ContactsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -61,5 +61,21 @@
         tools:itemCount="20"
         tools:layout_editor_absoluteX="0dp"
         tools:listitem="@layout/item_contact" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deleteContactsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="36dp"
+        android:clickable="true"
+        android:contentDescription="@string/item_contact_delete_contact"
+        android:focusable="true"
+        android:src="@drawable/ic_trash"
+        app:backgroundTint="@color/orange"
+        app:tint="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

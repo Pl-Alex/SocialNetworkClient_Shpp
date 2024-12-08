@@ -36,6 +36,9 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
         ContactsViewModel.createFactory((requireContext().applicationContext as App).contactService)
     }
 
+    private lateinit var adapter: ContactsAdapter
+    private var isSelectionMode = false
+
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -59,7 +62,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         enableTransitionAnimation()
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -69,21 +72,29 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
         postponeEnterTransition()
         super.onViewCreated(view, savedInstanceState)
 
-        binding.root.applyWindowInsets()
-        setRecyclerView()
-        tryToLoadContactsFromDevice()
+        with(binding) {
+            root.applyWindowInsets()
+            setRecyclerView()
+            tryToLoadContactsFromDevice()
+            recyclerView.doOnPreDraw {
+                startPostponedEnterTransition()
+            }
+            setListeners()
+        }
+    }
 
-        binding.recyclerView.doOnPreDraw {
-            startPostponedEnterTransition()
+    private fun FragmentContactsBinding.setListeners() {
+        addContactButton.setOnClickListener {
+            findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragmentToAddContactFragment())
         }
 
-        binding.addContactButton.setOnClickListener {
-            findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragmentToAddContactFragment())
+        deleteContactsButton.setOnClickListener {
+            deleteContacts()
         }
     }
 
     private fun setRecyclerView() {
-        val adapter = ContactsAdapter(object : IContactActionListener {
+        adapter = ContactsAdapter(object : IContactActionListener {
             override fun onContactDelete(contact: Contact) {
                 deleteContact(contact)
             }
@@ -98,6 +109,10 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
                     )
                 val extras = FragmentNavigatorExtras(imageView to "contacts_details")
                 findNavController().navigate(action, extras)
+            }
+
+            override fun onContactSelect(contact: Contact) {
+                toggleSelection(contact)
             }
         })
 
@@ -123,8 +138,19 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val contact = vm.contacts.value?.get(viewHolder.adapterPosition)
+                val contact = vm.contacts.value?.get(viewHolder.bindingAdapterPosition)
                 contact?.let { deleteContact(contact) }
+            }
+
+            override fun getSwipeDirs(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+            ): Int {
+                return if (isSelectionMode) {
+                    0
+                } else {
+                    super.getSwipeDirs(recyclerView, viewHolder)
+                }
             }
         }).attachToRecyclerView(binding.recyclerView)
 
@@ -140,6 +166,16 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
         )
     }
 
+    private fun toggleSelection(contact: Contact) {
+        adapter.toggleSelection(contact)
+        val selectedCount = adapter.getSelectedContacts().size
+        isSelectionMode = selectedCount > 0
+        if (isSelectionMode) {
+            binding.deleteContactsButton.visibility = View.VISIBLE
+        } else {
+            binding.deleteContactsButton.visibility = View.GONE
+        }
+    }
 
     private fun deleteContact(contact: Contact) {
         vm.deleteContact(contact)
@@ -147,6 +183,22 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
         val snackbar = Snackbar.make(
             binding.root,
             getString(R.string.contact_deleted),
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction(getString(R.string.undo)) {
+            vm.recoverContacts()
+        }
+        snackbar.show()
+    }
+
+    private fun deleteContacts() {
+        vm.deleteContacts(adapter.getSelectedContacts())
+        isSelectionMode = false
+        adapter.clearSelection()
+        binding.deleteContactsButton.visibility = View.GONE
+        val snackbar = Snackbar.make(
+            binding.root,
+            getString(R.string.contacts_deleted),
             Snackbar.LENGTH_LONG
         )
         snackbar.setAction(getString(R.string.undo)) {
