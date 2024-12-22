@@ -1,4 +1,4 @@
-package com.alexP.socialnetwork.ui.screens.addcontact
+package com.alexP.socialnetwork.ui.main.addcontact
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel

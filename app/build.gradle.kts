@@ -86,4 +86,8 @@ dependencies {
     // AndroidX Lifecycle components for managing UI-related data
     implementation(libs.lifecycleRuntime)
     implementation(libs.lifecycleViewmodel)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 }

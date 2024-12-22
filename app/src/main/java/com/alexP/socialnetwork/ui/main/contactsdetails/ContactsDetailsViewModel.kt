@@ -1,4 +1,4 @@
-package com.alexP.socialnetwork.ui.screens.contactsdetails
+package com.alexP.socialnetwork.ui.main.contactsdetails
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,4 +1,4 @@
-package com.alexP.socialnetwork.ui.mainactivity
+package com.alexP.socialnetwork.ui.main
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

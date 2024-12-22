@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav_graph"
+    app:startDestination="@id/singUpFragment">
+
+    <fragment
+        android:id="@+id/singUpFragment"
+        android:name="com.alexP.socialnetwork.ui.auth.singUp.SingUpFragment"
+        android:label="fragment_sing_up"
+        tools:layout="@layout/fragment_sing_up" >
+        <action
+            android:id="@+id/action_singUpFragment_to_singUpExtendedFragment"
+            app:destination="@id/singUpExtendedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/singUpExtendedFragment"
+        android:name="com.alexP.socialnetwork.ui.auth.singUpExtended.SingUpExtendedFragment"
+        android:label="SingUpExtendedFragment" />
+    <fragment
+        android:id="@+id/logInFragment"
+        android:name="com.alexP.socialnetwork.ui.auth.logIn.LogInFragment"
+        android:label="fragment_log_in"
+        tools:layout="@layout/fragment_log_in" >
+        <action
+            android:id="@+id/action_logInFragment_to_singUpFragment"
+            app:destination="@id/singUpFragment" />
+    </fragment>
+</navigation>

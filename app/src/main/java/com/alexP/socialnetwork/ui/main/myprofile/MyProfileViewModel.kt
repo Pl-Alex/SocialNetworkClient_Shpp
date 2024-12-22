@@ -1,4 +1,4 @@
-package com.alexP.socialnetwork.ui.screens.myprofile
+package com.alexP.socialnetwork.ui.main.myprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

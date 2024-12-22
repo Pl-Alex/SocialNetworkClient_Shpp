@@ -1,4 +1,4 @@
-package com.alexP.socialnetwork.ui.screens.contacts.adapter
+package com.alexP.socialnetwork.ui.main.contacts.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

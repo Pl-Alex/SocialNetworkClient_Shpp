@@ -15,7 +15,7 @@ import java.util.Locale
 
 fun ImageView.loadCircularImage(imageLink: String) {
     Glide.with(this).load(imageLink).apply(RequestOptions.circleCropTransform())
-        .placeholder(R.drawable.default_contact_image).error(R.drawable.default_contact_image)
+        .placeholder(R.drawable.default_profile_image_1).error(R.drawable.default_profile_image_2)
         .into(this)
 }
 

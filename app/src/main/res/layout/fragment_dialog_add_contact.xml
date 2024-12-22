@@ -5,7 +5,7 @@
     android:background="?attr/colorSurface"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screens.addcontact.AddContactFragment">
+    tools:context=".ui.main.addcontact.AddContactFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideline"
@@ -66,8 +66,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView_profileImage"
-        android:layout_width="@dimen/my_profile_picture_size"
-        android:layout_height="@dimen/my_profile_picture_size"
+        android:layout_width="@dimen/profile_picture_size"
+        android:layout_height="@dimen/profile_picture_size"
         android:layout_marginBottom="@dimen/addContact_fragment_imageView_profileImage_bottom_margin"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@id/topbar_bg"
@@ -75,7 +75,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/topbar_bg"
         app:shapeAppearanceOverlay="@style/rounded"
-        app:srcCompat="@drawable/default_profile_image" />
+        app:srcCompat="@drawable/default_profile_image_1" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView_addProfileImage"

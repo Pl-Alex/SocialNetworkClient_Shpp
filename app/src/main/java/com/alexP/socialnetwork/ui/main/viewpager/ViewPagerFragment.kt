@@ -1,4 +1,4 @@
-package com.alexP.socialnetwork.ui.screens.viewpager
+package com.alexP.socialnetwork.ui.main.viewpager
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.alexP.socialnetwork.databinding.FragmentViewpagerBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
-import com.alexP.socialnetwork.ui.screens.contacts.ContactsFragment
-import com.alexP.socialnetwork.ui.screens.myprofile.MyProfileFragment
+import com.alexP.socialnetwork.ui.main.contacts.ContactsFragment
+import com.alexP.socialnetwork.ui.main.myprofile.MyProfileFragment
 
 class ViewPagerFragment : BaseFragment<FragmentViewpagerBinding>() {
 

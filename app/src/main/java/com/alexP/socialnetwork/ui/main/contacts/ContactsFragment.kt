@@ -1,4 +1,4 @@
-package com.alexP.socialnetwork.ui.screens.contacts
+package com.alexP.socialnetwork.ui.main.contacts
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -20,9 +20,9 @@ import com.alexP.socialnetwork.App
 import com.alexP.socialnetwork.R
 import com.alexP.socialnetwork.databinding.FragmentContactsBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
-import com.alexP.socialnetwork.ui.screens.contacts.adapter.ContactsAdapter
-import com.alexP.socialnetwork.ui.screens.contacts.adapter.IContactActionListener
-import com.alexP.socialnetwork.ui.screens.viewpager.ViewPagerFragmentDirections
+import com.alexP.socialnetwork.ui.main.contacts.adapter.ContactsAdapter
+import com.alexP.socialnetwork.ui.main.contacts.adapter.IContactActionListener
+import com.alexP.socialnetwork.ui.main.viewpager.ViewPagerFragmentDirections
 import com.alexP.socialnetwork.utils.SpacingItemDecorator
 import com.alexP.socialnetwork.utils.applyWindowInsets
 import com.alexP.socialnetwork.utils.enableTransitionAnimation
@@ -85,7 +85,10 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
 
     private fun FragmentContactsBinding.setListeners() {
         addContactButton.setOnClickListener {
-            findNavController().navigate(ViewPagerFragmentDirections.actionViewPagerFragmentToAddContactFragment())
+            val action = ViewPagerFragmentDirections.actionViewPagerFragmentToAddContactFragment()
+            if (findNavController().currentDestination?.getAction(action.actionId) != null) {
+                findNavController().navigate(action)
+            }
         }
 
         deleteContactsButton.setOnClickListener {
@@ -94,6 +97,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
     }
 
     private fun setRecyclerView() {
+        val rv = binding.recyclerView
         adapter = ContactsAdapter(object : IContactActionListener {
             override fun onContactDelete(contact: Contact) {
                 deleteContact(contact)
@@ -120,7 +124,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
             RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 if (positionStart == 0)
-                    binding.recyclerView.scrollToPosition(positionStart)
+                    rv.scrollToPosition(positionStart)
             }
         })
 
@@ -152,18 +156,19 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
                     super.getSwipeDirs(recyclerView, viewHolder)
                 }
             }
-        }).attachToRecyclerView(binding.recyclerView)
+        }).attachToRecyclerView(rv)
 
         val layoutManager = LinearLayoutManager(context)
 
-        binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.addItemDecoration(
+        rv.layoutManager = layoutManager
+        rv.adapter = adapter
+        rv.addItemDecoration(
             SpacingItemDecorator(
                 resources.getDimensionPixelSize(R.dimen.contacts_recyclerView_horizontal_spacing),
                 resources.getDimensionPixelSize(R.dimen.contacts_recyclerView_vertical_spacing)
             )
         )
+        rv
     }
 
     private fun toggleSelection(contact: Contact) {

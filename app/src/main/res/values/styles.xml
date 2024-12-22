@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Assignment1.BorderedButton" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Assignment1.BorderedButton" parent="Theme.Assignment1">
         <item name="cornerRadius">6dp</item>
         <item name="strokeWidth">2dp</item>
         <item name="android:paddingTop">10.1dp</item>
         <item name="android:paddingBottom">10.1dp</item>
         <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
     </style>
 
-    <style name="Assignment1.ColorButton" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Assignment1.ColorButton" parent="Theme.Assignment1">
         <item name="cornerRadius">6dp</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
     </style>
 
     <style name="rounded">
@@ -23,6 +27,11 @@
 
     <style name="CustomTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="boxStrokeColor">@color/box_stroke_color_selector</item>
+    </style>
+
+    <style name="checkBox" parent="Theme.Assignment1">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/white</item>
     </style>
 
 </resources>

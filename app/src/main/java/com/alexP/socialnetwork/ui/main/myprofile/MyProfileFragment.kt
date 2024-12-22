@@ -1,7 +1,5 @@
-package com.alexP.socialnetwork.ui.screens.myprofile
+package com.alexP.socialnetwork.ui.main.myprofile
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alexP.socialnetwork.databinding.FragmentMyprofileBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
-import com.alexP.socialnetwork.ui.screens.signup.AuthActivity
 import com.alexP.socialnetwork.utils.applyWindowInsets
 import com.alexP.socialnetwork.utils.loadCircularImage
 import com.alexp.datastore.DataStoreProvider
@@ -52,9 +49,6 @@ class MyProfileFragment : BaseFragment<FragmentMyprofileBinding>() {
 
     private fun onLogOutButtonPressed() {
         vm.cleanStorage()
-        val intent = Intent(requireContext(), AuthActivity::class.java)
-        requireActivity().finish()
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(requireActivity()).toBundle())
     }
 
     companion object {
