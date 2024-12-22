@@ -119,10 +119,10 @@
             android:textAppearance="?attr/textAppearanceLabelLarge"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textCursorDrawable="@null" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
-        android:theme="@style/checkBox"
         android:id="@+id/checkBoxRemember"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -133,6 +133,7 @@
         android:text="@string/auth_activity_remember_me"
         android:textAppearance="?attr/textAppearanceLabelSmall"
         android:textColor="?attr/colorOutline"
+        android:theme="@style/checkBox"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/inputLayoutPassword"
         tools:ignore="RtlSymmetry" />
@@ -213,5 +214,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textViewNoAccount"
         app:layout_constraintTop_toTopOf="@id/textViewNoAccount" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,12 +7,11 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
 
-private const val emailKey = "email"
-private const val passwordKey = "password"
+private const val accessTokenKey = "access_token"
+private const val refreshTokenKey = "refresh_token"
 
 private const val DATASTORE_NAME = "user_preferences"
 
@@ -26,18 +25,20 @@ class DataStoreProvider(private val context: Context) {
         }
     }
 
-    suspend fun saveCredentials(email: String, password: String) {
-        writeValue(stringPreferencesKey(emailKey), email)
-        writeValue(stringPreferencesKey(passwordKey), password)
+    suspend fun setAccessToken(accessToken: String) {
+        writeValue(stringPreferencesKey(accessTokenKey), accessToken)
     }
 
-    fun getCredentials(): Flow<Pair<String, String>> {
-        return combine(
-            readString(stringPreferencesKey(emailKey)),
-            readString(stringPreferencesKey(passwordKey))
-        ) { email, password ->
-            email to password
-        }
+    suspend fun setRefreshToken(refreshToken: String) {
+        writeValue(stringPreferencesKey(refreshTokenKey), refreshToken)
+    }
+
+    fun getAccessToken(): Flow<String> {
+        return readString(stringPreferencesKey(accessTokenKey))
+    }
+
+    fun getRefreshToken(): Flow<String> {
+        return readString(stringPreferencesKey(refreshTokenKey))
     }
 
     private fun readString(dataStoreKey: Preferences.Key<String>): Flow<String> {
@@ -46,14 +47,9 @@ class DataStoreProvider(private val context: Context) {
         }
     }
 
-    fun readEmail(): Flow<String> {
-        return readString(stringPreferencesKey(emailKey))
-    }
-
     suspend fun cleanStorage() {
         context.dataStore.edit { pref ->
-            pref.remove(stringPreferencesKey(emailKey))
-            pref.remove(stringPreferencesKey(passwordKey))
+            pref.clear()
         }
     }
 
