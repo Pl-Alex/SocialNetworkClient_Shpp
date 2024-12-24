@@ -1,5 +1,6 @@
-package com.alexP.socialnetwork.ui.auth.singUp
+package com.alexP.socialnetwork.ui.auth.singUpExtended
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,13 +13,17 @@ import com.alexP.socialnetwork.data.repository.MainRepository
 import com.alexp.datastore.DataStoreProvider
 import com.alexp.textvalidation.validateEmail
 import com.alexp.textvalidation.validatePassword
+import com.alexp.textvalidation.validatePhone
+import com.alexp.textvalidation.validateUsername
 import com.alexp.textvalidation.validator.base.ValidationResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class SingUpViewModel(
+class SingUpExtendedViewModel(
     private val dataStore: DataStoreProvider,
     private val mainRepository: MainRepository,
 ) : ViewModel() {
@@ -28,32 +33,31 @@ class SingUpViewModel(
 
     private var job: Job? = null
 
-    fun createUser(email: String, password: String) {
+    fun editUser(username: String, phone: String) {
         job = CoroutineScope(Dispatchers.IO).launch {
             viewModelScope.launch {
                 _requestState.value = RequestState.Loading
-                mainRepository.createUser(email, password)
+                val token = dataStore.getAccessToken().first()
+                val userId = dataStore.getUserId().first()
+                mainRepository.editUser(username, phone, userId, token)
                     .onSuccess { response ->
-                        _requestState.value = RequestState.Success
-                        dataStore.setAccessToken(response.data!!.accessToken)
-                        dataStore.setRefreshToken(response.data.refreshToken)
-                        dataStore.setUserId(response.data.user.id.toString())
+                         _requestState.value = RequestState.Success
                     }.onFailure { error ->
                         _requestState.value =
                             RequestState.Error(error.message ?: "Unknown error")
                     }
+
+
             }
         }
     }
 
-
-
-    fun validateEmailVm(email: String): ValidationResult {
-        return validateEmail(email)
+    fun validateUserNameVm(userName: String): ValidationResult {
+        return validateUsername(userName)
     }
 
-    fun validatePasswordVm(password: String): ValidationResult {
-        return validatePassword(password)
+    fun validatePhoneVm(phone: String): ValidationResult {
+        return validatePhone(phone)
     }
 
     fun resetRegistrationState() {
@@ -72,7 +76,7 @@ class SingUpViewModel(
             repository: MainRepository,
         ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                SingUpViewModel(dataStore, repository)
+                SingUpExtendedViewModel(dataStore, repository)
             }
         }
     }

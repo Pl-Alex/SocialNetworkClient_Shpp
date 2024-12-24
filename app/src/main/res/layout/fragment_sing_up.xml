@@ -145,7 +145,8 @@
         android:layout_marginBottom="@dimen/auth_layout_button_singInGoogle_margin_bottom"
         app:layout_constraintBottom_toTopOf="@id/textViewOrLabel"
         app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-        app:layout_constraintStart_toStartOf="@id/leftGuideline" />
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/textViewOrLabel"

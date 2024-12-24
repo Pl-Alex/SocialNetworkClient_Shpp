@@ -17,7 +17,11 @@
     <fragment
         android:id="@+id/singUpExtendedFragment"
         android:name="com.alexP.socialnetwork.ui.auth.singUpExtended.SingUpExtendedFragment"
-        android:label="SingUpExtendedFragment" />
+        android:label="SingUpExtendedFragment" >
+        <action
+            android:id="@+id/action_singUpExtendedFragment_to_nav_graph"
+            app:destination="@id/nav_graph" />
+    </fragment>
     <fragment
         android:id="@+id/logInFragment"
         android:name="com.alexP.socialnetwork.ui.auth.logIn.LogInFragment"
@@ -27,4 +31,5 @@
             android:id="@+id/action_logInFragment_to_singUpFragment"
             app:destination="@id/singUpFragment" />
     </fragment>
+    <include app:graph="@navigation/main_nav_graph" />
 </navigation>

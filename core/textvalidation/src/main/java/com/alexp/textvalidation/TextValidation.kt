@@ -1,5 +1,6 @@
 package com.alexp.textvalidation
 
+import com.alexp.textvalidation.validator.DigitsValidator
 import com.alexp.textvalidation.validator.base.BaseValidator
 import com.alexp.textvalidation.validator.EmailValidator
 import com.alexp.textvalidation.validator.EmptyValidator
@@ -20,7 +21,7 @@ fun validateUsername(username: String): ValidationResult {
 }
 
 fun validatePhone(phone: String): ValidationResult {
-    return BaseValidator.validate(EmptyValidator(phone))
+    return BaseValidator.validate(EmptyValidator(phone), DigitsValidator(phone))
 }
 
 fun validateCareer(career: String): ValidationResult {

@@ -7,6 +7,13 @@ data class CreateUserResponse(
     val data: UserData?
 )
 
+data class EditUserResponse(
+    val status: String,
+    val code: Int,
+    val message: String,
+    val data: UserData?
+)
+
 data class ErrorResponse(
     val status: String,
     val code: Int,
@@ -34,3 +41,10 @@ data class User(
     val linkedin: String?,
     val image: String?
 )
+
+sealed class RequestState {
+    object Initial : RequestState()
+    object Loading : RequestState()
+    object Success : RequestState()
+    data class Error(val message: String) : RequestState()
+}

@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.map
 
 private const val accessTokenKey = "access_token"
 private const val refreshTokenKey = "refresh_token"
+private const val userIdKey = "user_id"
+
 
 private const val DATASTORE_NAME = "user_preferences"
 
@@ -33,12 +35,20 @@ class DataStoreProvider(private val context: Context) {
         writeValue(stringPreferencesKey(refreshTokenKey), refreshToken)
     }
 
+    suspend fun setUserId(userid: String) {
+        writeValue(stringPreferencesKey(userIdKey), userid)
+    }
+
     fun getAccessToken(): Flow<String> {
         return readString(stringPreferencesKey(accessTokenKey))
     }
 
     fun getRefreshToken(): Flow<String> {
         return readString(stringPreferencesKey(refreshTokenKey))
+    }
+
+    fun getUserId(): Flow<String> {
+        return readString(stringPreferencesKey(userIdKey))
     }
 
     private fun readString(dataStoreKey: Preferences.Key<String>): Flow<String> {
@@ -52,5 +62,4 @@ class DataStoreProvider(private val context: Context) {
             pref.clear()
         }
     }
-
 }
