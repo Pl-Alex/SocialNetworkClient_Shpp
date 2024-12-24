@@ -7,23 +7,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.alexP.socialnetwork.data.ApiService
-import com.alexP.socialnetwork.data.models.RequestState
-import com.alexP.socialnetwork.data.repository.MainRepository
+import com.alexp.webapi.ApiService
+import com.alexp.webapi.models.RequestState
+import com.alexp.webapi.repository.MainRepository
 import com.alexP.socialnetwork.databinding.FragmentSingUpExtendedBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
 import com.alexP.socialnetwork.utils.getValidationResultMessage
 import com.alexp.datastore.DataStoreProvider
 import com.alexp.textvalidation.validator.base.ValidationResult
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SingUpExtendedFragment : BaseFragment<FragmentSingUpExtendedBinding>() {
 
-    private val vm: SingUpExtendedViewModel by viewModels {
-        SingUpExtendedViewModel.createFactory(
-            DataStoreProvider(requireContext()),
-            MainRepository(ApiService.getInstance())
-        )
-    }
+    private val vm: SingUpExtendedViewModel by viewModel()
 
     override fun inflate(
         inflater: LayoutInflater,
@@ -56,18 +52,18 @@ class SingUpExtendedFragment : BaseFragment<FragmentSingUpExtendedBinding>() {
         vm.requestState.observe(viewLifecycleOwner)
         { state ->
             when (state) {
-                RequestState.Success -> {
+                com.alexp.webapi.models.RequestState.Success -> {
                     binding.progressBar.visibility = View.GONE
                     findNavController().navigate(SingUpExtendedFragmentDirections.actionSingUpExtendedFragmentToNavGraph())
                 }
 
-                is RequestState.Error -> {
+                is com.alexp.webapi.models.RequestState.Error -> {
                     binding.progressBar.visibility = View.GONE
                     Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                 }
 
-                RequestState.Initial -> {}
-                RequestState.Loading -> binding.progressBar.visibility = View.VISIBLE
+                com.alexp.webapi.models.RequestState.Initial -> {}
+                com.alexp.webapi.models.RequestState.Loading -> binding.progressBar.visibility = View.VISIBLE
             }
         }
     }

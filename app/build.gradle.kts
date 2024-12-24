@@ -17,6 +17,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "BASE_URL", "\"http://178.63.9.114:7777/api/\"")
     }
 
     buildTypes {
@@ -36,6 +38,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
 }
@@ -45,6 +48,7 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.contactsprovider)
     implementation(projects.core.textvalidation)
+    implementation(projects.core.webapi)
 
     // AndroidX Core KTX for Kotlin extensions
     implementation(libs.androidx.ktx)
@@ -86,9 +90,6 @@ dependencies {
     implementation(libs.lifecycleRuntime)
     implementation(libs.lifecycleViewmodel)
 
-    // Retrofit for network operations
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
+    // DI
+    implementation(libs.koin.android)
 }

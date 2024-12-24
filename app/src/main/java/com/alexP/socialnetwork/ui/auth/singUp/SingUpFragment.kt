@@ -2,30 +2,21 @@ package com.alexP.socialnetwork.ui.auth.singUp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.alexP.socialnetwork.data.ApiService
-import com.alexP.socialnetwork.data.models.RequestState
-import com.alexP.socialnetwork.data.repository.MainRepository
 import com.alexP.socialnetwork.databinding.FragmentSingUpBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
 import com.alexP.socialnetwork.utils.getValidationResultMessage
-import com.alexp.datastore.DataStoreProvider
 import com.alexp.textvalidation.validator.base.ValidationResult
+import com.alexp.webapi.models.RequestState
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SingUpFragment : BaseFragment<FragmentSingUpBinding>() {
 
-    private val vm: SingUpViewModel by viewModels {
-        SingUpViewModel.createFactory(
-            DataStoreProvider(requireContext()),
-            MainRepository(ApiService.getInstance())
-        )
-    }
+    private val vm: SingUpViewModel by viewModel()
 
     override fun inflate(inflater: LayoutInflater, container: ViewGroup?): FragmentSingUpBinding {
         return FragmentSingUpBinding.inflate(inflater, container, false)
