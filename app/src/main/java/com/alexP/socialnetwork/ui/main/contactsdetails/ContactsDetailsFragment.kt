@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>() {
 
-    private val vm: ContactsDetailsViewModel by viewModels()
+    private val viewModel: ContactsDetailsViewModel by viewModels()
     private val args: ContactsDetailsFragmentArgs by navArgs()
 
     override fun inflate(
@@ -42,7 +42,7 @@ class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>() {
         binding.root.applyWindowInsets()
         observeViewModel()
 
-        vm.setContactDetails(
+        viewModel.setContactDetails(
             args.fullName,
             args.career,
             args.address,
@@ -59,16 +59,16 @@ class ContactsDetailsFragment : BaseFragment<FragmentContactDetailsBinding>() {
     }
 
     private fun observeViewModel() {
-        vm.fullName.observe(viewLifecycleOwner) {
+        viewModel.fullName.observe(viewLifecycleOwner) {
             binding.textViewNameSurname.text = it
         }
-        vm.career.observe(viewLifecycleOwner) {
+        viewModel.career.observe(viewLifecycleOwner) {
             binding.textViewCareer.text = it
         }
-        vm.homeAddress.observe(viewLifecycleOwner) {
+        viewModel.homeAddress.observe(viewLifecycleOwner) {
             binding.textViewHomeAddress.text = it
         }
-        vm.photo.observe(viewLifecycleOwner) {
+        viewModel.photo.observe(viewLifecycleOwner) {
             binding.imageViewProfileImage.loadCircularImage(it)
         }
     }

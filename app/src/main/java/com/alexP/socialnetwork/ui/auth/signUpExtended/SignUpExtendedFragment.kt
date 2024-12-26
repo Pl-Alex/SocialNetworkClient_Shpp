@@ -1,4 +1,4 @@
-package com.alexP.socialnetwork.ui.auth.singUpExtended
+package com.alexP.socialnetwork.ui.auth.signUpExtended
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,29 +7,37 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.alexP.socialnetwork.data.ApiService
-import com.alexP.socialnetwork.data.models.RequestState
-import com.alexP.socialnetwork.data.repository.MainRepository
-import com.alexP.socialnetwork.databinding.FragmentSingUpExtendedBinding
+import com.alexp.webapi.ApiService
+import com.alexp.webapi.repository.MainRepository
+import com.alexP.socialnetwork.databinding.FragmentSignUpExtendedBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
+import com.alexP.socialnetwork.ui.state.RequestState
 import com.alexP.socialnetwork.utils.getValidationResultMessage
 import com.alexp.datastore.DataStoreProvider
 import com.alexp.textvalidation.validator.base.ValidationResult
+import com.alexp.webapi.BASE_URL
+import com.alexp.webapi.getOkHttpClient
+import com.alexp.webapi.getRetrofitInstance
 
-class SingUpExtendedFragment : BaseFragment<FragmentSingUpExtendedBinding>() {
+class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>() {
 
-    private val vm: SingUpExtendedViewModel by viewModels {
-        SingUpExtendedViewModel.createFactory(
+    private val viewModel: SignUpExtendedViewModel by viewModels {
+        SignUpExtendedViewModel.createFactory(
             DataStoreProvider(requireContext()),
-            MainRepository(ApiService.getInstance())
+            MainRepository(
+                getRetrofitInstance(
+                    BASE_URL,
+                    getOkHttpClient()
+                ).create(ApiService::class.java)
+            )
         )
     }
 
     override fun inflate(
         inflater: LayoutInflater,
         container: ViewGroup?,
-    ): FragmentSingUpExtendedBinding {
-        return FragmentSingUpExtendedBinding.inflate(inflater, container, false)
+    ): FragmentSignUpExtendedBinding {
+        return FragmentSignUpExtendedBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,12 +61,12 @@ class SingUpExtendedFragment : BaseFragment<FragmentSingUpExtendedBinding>() {
     }
 
     private fun setObservers() {
-        vm.requestState.observe(viewLifecycleOwner)
+        viewModel.requestState.observe(viewLifecycleOwner)
         { state ->
             when (state) {
                 RequestState.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    findNavController().navigate(SingUpExtendedFragmentDirections.actionSingUpExtendedFragmentToNavGraph())
+                    findNavController().navigate(SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToNavGraph())
                 }
 
                 is RequestState.Error -> {
@@ -74,7 +82,7 @@ class SingUpExtendedFragment : BaseFragment<FragmentSingUpExtendedBinding>() {
 
     private fun onForwardButtonPressed() {
         if (!isAnyEnteredDataInvalid()) {
-            vm.editUser(
+            viewModel.editUser(
                 binding.inputEditTextPhone.text.toString(),
                 binding.inputEditTextPhone.text.toString()
             )
@@ -88,20 +96,20 @@ class SingUpExtendedFragment : BaseFragment<FragmentSingUpExtendedBinding>() {
     }
 
     private fun validateUserName(): Boolean {
-        val validationResult = vm.validateUserNameVm(binding.inputEditTextUserName.text.toString())
+        val validationResult = viewModel.validateUserNameVm(binding.inputEditTextUserName.text.toString())
         binding.inputLayoutUserName.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
     }
 
     private fun validatePhone(): Boolean {
-        val validationResult = vm.validatePhoneVm(binding.inputEditTextPhone.text.toString())
+        val validationResult = viewModel.validatePhoneVm(binding.inputEditTextPhone.text.toString())
         binding.inputLayoutPhone.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
     }
 
     private fun resetViewModelState() {
-        vm.resetRegistrationState()
+        viewModel.resetRegistrationState()
     }
 }

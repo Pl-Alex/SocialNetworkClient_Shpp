@@ -32,7 +32,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
 
-    private val vm: ContactsViewModel by viewModels {
+    private val viewModel: ContactsViewModel by viewModels {
         ContactsViewModel.createFactory((requireContext().applicationContext as App).contactService)
     }
 
@@ -128,7 +128,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
             }
         })
 
-        vm.contacts.observe(viewLifecycleOwner) {
+        viewModel.contacts.observe(viewLifecycleOwner) {
             adapter.submitList(it.toMutableList())
         }
 
@@ -142,7 +142,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val contact = vm.contacts.value?.get(viewHolder.bindingAdapterPosition)
+                val contact = viewModel.contacts.value?.get(viewHolder.bindingAdapterPosition)
                 contact?.let { deleteContact(contact) }
             }
 
@@ -183,7 +183,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
     }
 
     private fun deleteContact(contact: Contact) {
-        vm.deleteContact(contact)
+        viewModel.deleteContact(contact)
 
         val snackbar = Snackbar.make(
             binding.root,
@@ -191,13 +191,13 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
             Snackbar.LENGTH_LONG
         )
         snackbar.setAction(getString(R.string.undo)) {
-            vm.recoverContacts()
+            viewModel.recoverContacts()
         }
         snackbar.show()
     }
 
     private fun deleteContacts() {
-        vm.deleteContacts(adapter.getSelectedContacts())
+        viewModel.deleteContacts(adapter.getSelectedContacts())
         isSelectionMode = false
         adapter.clearSelection()
         binding.deleteContactsButton.visibility = View.GONE
@@ -207,13 +207,13 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
             Snackbar.LENGTH_LONG
         )
         snackbar.setAction(getString(R.string.undo)) {
-            vm.recoverContacts()
+            viewModel.recoverContacts()
         }
         snackbar.show()
     }
 
     private fun loadContactsFromDevice() {
-        vm.addContacts(requireContext().contentResolver)
+        viewModel.addContacts(requireContext().contentResolver)
     }
 
     private fun tryToLoadContactsFromDevice() {

@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class MyProfileFragment : BaseFragment<FragmentMyprofileBinding>() {
 
 
-    private val vm: MyProfileViewModel by viewModels{
+    private val viewModel: MyProfileViewModel by viewModels{
         MyProfileViewModel.createFactory(DataStoreProvider(requireContext()))
     }
     override fun inflate(
@@ -34,7 +34,7 @@ class MyProfileFragment : BaseFragment<FragmentMyprofileBinding>() {
 
         setListeners()
         lifecycleScope.launch {
-            vm.myProfileState.collect { state ->
+            viewModel.myProfileState.collect { state ->
                 binding.textViewNameSurname.text = state.username
             }
         }
@@ -48,7 +48,7 @@ class MyProfileFragment : BaseFragment<FragmentMyprofileBinding>() {
     }
 
     private fun onLogOutButtonPressed() {
-        vm.cleanStorage()
+        viewModel.cleanStorage()
     }
 
     companion object {

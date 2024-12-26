@@ -21,13 +21,13 @@ import kotlinx.coroutines.launch
 class AddContactFragment : DialogFragment() {
 
     private lateinit var binding: FragmentDialogAddContactBinding
-    private val vm: AddContactViewModel by viewModels()
+    private val viewModel: AddContactViewModel by viewModels()
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri == null) return@registerForActivityResult
             try {
-                vm.setGalleryUri(uri)
+                viewModel.setGalleryUri(uri)
                 binding.imageViewProfileImage.loadCircularImage(uri.toString())
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -51,7 +51,7 @@ class AddContactFragment : DialogFragment() {
 
     private fun observeValues() {
         viewLifecycleOwner.lifecycleScope.launch {
-            vm.galleryUri.collect { uri ->
+            viewModel.galleryUri.collect { uri ->
                 uri?.let {
                     binding.imageViewProfileImage.loadCircularImage(it.toString())
                 }
@@ -78,42 +78,42 @@ class AddContactFragment : DialogFragment() {
     }
 
     private fun validateUsername(): Boolean {
-        val validationResult = vm.validateUsernameVm(binding.inputEditTextUsername.text.toString())
+        val validationResult = viewModel.validateUsernameVm(binding.inputEditTextUsername.text.toString())
         binding.inputLayoutUsername.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
     }
 
     private fun validateCareer(): Boolean {
-        val validationResult = vm.validateCareerVm(binding.inputEditTextCareer.text.toString())
+        val validationResult = viewModel.validateCareerVm(binding.inputEditTextCareer.text.toString())
         binding.inputLayoutCareer.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
     }
 
     private fun validateEmail(): Boolean {
-        val validationResult = vm.validateEmailVm(binding.inputEditTextEmail.text.toString())
+        val validationResult = viewModel.validateEmailVm(binding.inputEditTextEmail.text.toString())
         binding.inputLayoutEmail.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
     }
 
     private fun validatePhone(): Boolean {
-        val validationResult = vm.validatePhoneVm(binding.inputEditTextPhone.text.toString())
+        val validationResult = viewModel.validatePhoneVm(binding.inputEditTextPhone.text.toString())
         binding.inputLayoutPhone.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
     }
 
     private fun validateAddress(): Boolean {
-        val validationResult = vm.validateAddressVm(binding.inputEditTextAddress.text.toString())
+        val validationResult = viewModel.validateAddressVm(binding.inputEditTextAddress.text.toString())
         binding.inputLayoutAddress.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
     }
 
     private fun validateDateOfBirth(): Boolean {
-        val validationResult = vm.validateDateOfBirthVm(binding.inputEditTextDateOfBirth.text.toString())
+        val validationResult = viewModel.validateDateOfBirthVm(binding.inputEditTextDateOfBirth.text.toString())
         binding.inputLayoutDateOfBirth.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
@@ -123,7 +123,7 @@ class AddContactFragment : DialogFragment() {
         if (isAnyEnteredDataInvalid()) return
         val contact = Contact(
             id = -1,
-            photo = vm.galleryUri.toString(),
+            photo = viewModel.galleryUri.toString(),
             fullName = binding.inputEditTextUsername.text.toString(),
             career = binding.inputEditTextCareer.text.toString(),
             email = binding.inputEditTextEmail.text.toString(),

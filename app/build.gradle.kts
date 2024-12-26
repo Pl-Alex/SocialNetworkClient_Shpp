@@ -45,6 +45,7 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.core.contactsprovider)
     implementation(projects.core.textvalidation)
+    implementation(projects.core.webapi)
 
     // AndroidX Core KTX for Kotlin extensions
     implementation(libs.androidx.ktx)
@@ -85,10 +86,4 @@ dependencies {
     // AndroidX Lifecycle components for managing UI-related data
     implementation(libs.lifecycleRuntime)
     implementation(libs.lifecycleViewmodel)
-
-    // Retrofit for network operations
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
 }

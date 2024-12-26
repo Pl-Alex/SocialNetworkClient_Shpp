@@ -1,38 +1,46 @@
-package com.alexP.socialnetwork.ui.auth.singUp
+package com.alexP.socialnetwork.ui.auth.signUp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.alexP.socialnetwork.data.ApiService
-import com.alexP.socialnetwork.data.models.RequestState
-import com.alexP.socialnetwork.data.repository.MainRepository
-import com.alexP.socialnetwork.databinding.FragmentSingUpBinding
+import com.alexp.webapi.ApiService
+import com.alexp.webapi.repository.MainRepository
+import com.alexP.socialnetwork.databinding.FragmentSignUpBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
+import com.alexP.socialnetwork.ui.state.RequestState
 import com.alexP.socialnetwork.utils.getValidationResultMessage
 import com.alexp.datastore.DataStoreProvider
 import com.alexp.textvalidation.validator.base.ValidationResult
+import com.alexp.webapi.BASE_URL
+import com.alexp.webapi.getOkHttpClient
+import com.alexp.webapi.getRetrofitInstance
 
-class SingUpFragment : BaseFragment<FragmentSingUpBinding>() {
+class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
 
-    private val vm: SingUpViewModel by viewModels {
-        SingUpViewModel.createFactory(
+    private val viewModel: SignUpViewModel by viewModels {
+        SignUpViewModel.createFactory(
             DataStoreProvider(requireContext()),
-            MainRepository(ApiService.getInstance())
+            MainRepository(
+                getRetrofitInstance(
+                    BASE_URL,
+                    getOkHttpClient()
+                ).create(ApiService::class.java)
+            )
         )
     }
 
-    override fun inflate(inflater: LayoutInflater, container: ViewGroup?): FragmentSingUpBinding {
-        return FragmentSingUpBinding.inflate(inflater, container, false)
+    override fun inflate(inflater: LayoutInflater, container: ViewGroup?): FragmentSignUpBinding {
+        return FragmentSignUpBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment())
         setListeners()
         setObservers()
         resetViewModelState()
@@ -44,7 +52,7 @@ class SingUpFragment : BaseFragment<FragmentSingUpBinding>() {
             buttonRegister.setOnClickListener {
                 onRegisterButtonPressed()
             }
-            buttonSingInGoogle.setOnClickListener {
+            buttonSignInGoogle.setOnClickListener {
                 inputEditTextEmail.setText("123@gmail.com")
                 inputEditTextPassword.setText("123@dwddWD")
             }
@@ -55,12 +63,12 @@ class SingUpFragment : BaseFragment<FragmentSingUpBinding>() {
     }
 
     private fun setObservers() {
-        vm.requestState.observe(viewLifecycleOwner)
+        viewModel.requestState.observe(viewLifecycleOwner)
         { state ->
             when (state) {
                 RequestState.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    findNavController().navigate(SingUpFragmentDirections.actionSingUpFragmentToSingUpExtendedFragment())
+                    findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSignUpExtendedFragment())
                 }
 
                 is RequestState.Error -> {
@@ -76,7 +84,7 @@ class SingUpFragment : BaseFragment<FragmentSingUpBinding>() {
 
     private fun onRegisterButtonPressed() {
         if (!isAnyEnteredDataInvalid()) {
-            vm.createUser(
+            viewModel.createUser(
                 binding.inputEditTextEmail.text.toString().lowercase(),
                 binding.inputEditTextPassword.text.toString()
             )
@@ -90,20 +98,21 @@ class SingUpFragment : BaseFragment<FragmentSingUpBinding>() {
     }
 
     private fun validateEmail(): Boolean {
-        val validationResult = vm.validateEmailVm(binding.inputEditTextEmail.text.toString())
+        val validationResult = viewModel.validateEmailVm(binding.inputEditTextEmail.text.toString())
         binding.inputLayoutEmail.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
     }
 
     private fun validatePassword(): Boolean {
-        val validationResult = vm.validatePasswordVm(binding.inputEditTextPassword.text.toString())
+        val validationResult =
+            viewModel.validatePasswordVm(binding.inputEditTextPassword.text.toString())
         binding.inputLayoutPassword.error =
             getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
         return validationResult == ValidationResult.SUCCESS
     }
 
     private fun resetViewModelState() {
-        vm.resetRegistrationState()
+        viewModel.resetRegistrationState()
     }
 }

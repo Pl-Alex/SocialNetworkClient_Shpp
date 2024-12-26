@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurfaceVariant"
-    tools:context=".ui.auth.singUp.SingUpFragment">
+    tools:context=".ui.auth.signUpExtended.SignUpExtendedFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideline"
@@ -35,17 +35,47 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/auth_layout_margin" />
 
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView_profileImage"
+        android:layout_width="@dimen/profile_picture_size"
+        android:layout_height="@dimen/profile_picture_size"
+        android:layout_marginBottom="@dimen/signUp_fragment_imageView_profileImage_bottom_margin"
+        android:background="?attr/colorOutline"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@id/textViewLetsGetAcquainted"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:shapeAppearanceOverlay="@style/rounded"
+        app:srcCompat="@drawable/default_profile_image_3" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView_addProfileImage"
+        android:layout_width="@dimen/my_profile_add_image_button_size"
+        android:layout_height="@dimen/my_profile_add_image_button_size"
+        android:layout_marginStart="@dimen/addContact_fragment_imageView_addProfileImage_start_margin"
+        android:clickable="true"
+        android:contentDescription="@string/add_contact_image"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@id/imageView_profileImage"
+        app:layout_constraintStart_toEndOf="@id/imageView_profileImage"
+        app:layout_constraintTop_toTopOf="@id/imageView_profileImage"
+        app:shapeAppearanceOverlay="@style/rounded"
+        app:srcCompat="@drawable/add_profile_image_button_ic" />
+
     <TextView
         android:id="@+id/textViewLetsGetAcquainted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/auth_label1_top_margin"
-        android:text="@string/auth_activity_lets_get_acquainted"
+        android:text="@string/sign_up_fragment_profile_data"
         android:textAppearance="?attr/textAppearanceHeadlineMedium"
         android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintBottom_toTopOf="@id/textViewFillOutTheProfileTip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/topGuideline"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/textViewFillOutTheProfileTip"
@@ -55,17 +85,18 @@
         android:text="@string/auth_activity_fill_out_the_profile_tip"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintBottom_toTopOf="@id/inputLayoutUserName"
         app:layout_constraintEnd_toEndOf="@id/textViewLetsGetAcquainted"
         app:layout_constraintStart_toStartOf="@id/textViewLetsGetAcquainted"
         app:layout_constraintTop_toBottomOf="@id/textViewLetsGetAcquainted" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputLayoutEmail"
+        android:id="@+id/inputLayoutUserName"
         style="@style/CustomTextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/auth_inputLayout_email_top_margin"
-        android:hint="@string/auth_activity_email"
+        android:hint="@string/user_name"
         android:inputType="textEmailAddress"
         android:textColorHint="?attr/colorOutline"
         app:boxBackgroundColor="?attr/colorSurfaceVariant"
@@ -74,15 +105,16 @@
         app:hintAnimationEnabled="false"
         app:hintTextAppearance="?attr/textAppearanceLabelSmall"
         app:hintTextColor="?attr/colorOutline"
+        app:layout_constraintBottom_toTopOf="@id/inputLayoutPhone"
         app:layout_constraintEnd_toEndOf="@id/rightGuideline"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/textViewFillOutTheProfileTip">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputEditTextEmail"
+            android:id="@+id/inputEditTextUserName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:maxLines="1"
             android:paddingTop="@dimen/auth_editText_padding"
             android:textAppearance="?attr/textAppearanceLabelLarge"
@@ -91,12 +123,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputLayoutPassword"
+        android:id="@+id/inputLayoutPhone"
         style="@style/CustomTextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/auth_inputLayout_password_top_margin"
-        android:hint="@string/auth_activity_password"
+        android:hint="@string/mobile_phone"
         android:inputType="textPassword"
         android:textColorHint="?attr/colorOutline"
         app:boxBackgroundColor="?attr/colorSurfaceVariant"
@@ -105,116 +137,51 @@
         app:hintAnimationEnabled="false"
         app:hintTextAppearance="?attr/textAppearanceLabelSmall"
         app:hintTextColor="?attr/colorOutline"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
         app:layout_constraintEnd_toEndOf="@id/rightGuideline"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toBottomOf="@id/inputLayoutEmail">
+        app:layout_constraintTop_toBottomOf="@id/inputLayoutUserName">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputEditTextPassword"
+            android:id="@+id/inputEditTextPhone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textPassword"
+            android:inputType="phone"
             android:lines="1"
             android:paddingTop="@dimen/auth_editText_padding"
             android:textAppearance="?attr/textAppearanceLabelLarge"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textCursorDrawable="@null" />
-
     </com.google.android.material.textfield.TextInputLayout>
 
-    <CheckBox
-        android:id="@+id/checkBoxRemember"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/auth_checkBox_remember_top_margin"
-        android:background="?android:attr/selectableItemBackground"
-        android:button="@drawable/checkbox_remember_me"
-        android:paddingStart="@dimen/checkbox_gap"
-        android:text="@string/auth_activity_remember_me"
-        android:textAppearance="?attr/textAppearanceLabelSmall"
-        android:textColor="?attr/colorOutline"
-        android:theme="@style/checkBox"
-        app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toBottomOf="@id/inputLayoutPassword"
-        tools:ignore="RtlSymmetry" />
-
-    <com.alexP.socialnetwork.utils.customViews.GoogleCustomButton
-        android:id="@+id/buttonSingInGoogle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/auth_layout_button_singInGoogle_margin_bottom"
-        app:layout_constraintBottom_toTopOf="@id/textViewOrLabel"
-        app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-        app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <TextView
-        android:id="@+id/textViewOrLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/auth_textView_orLabel_bottom_margin"
-        android:text="@string/auth_activity_or"
-        android:textAppearance="?attr/textAppearanceLabelLarge"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        app:layout_constraintBottom_toTopOf="@id/buttonRegister"
-        app:layout_constraintEnd_toEndOf="@id/inputLayoutEmail"
-        app:layout_constraintStart_toStartOf="@id/inputLayoutEmail" />
-
     <Button
-        android:id="@+id/buttonRegister"
+        android:id="@+id/button_cancel"
         style="@style/Assignment1.BorderedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/auth_button_register_bottom_margin"
-        android:paddingVertical="@dimen/auth_activity_button_register_paddingVertical"
-        android:text="@string/auth_activity_register"
+        android:layout_marginBottom="@dimen/my_profile_button_editProfile_bottom_margin16dp"
+        android:text="@string/cancel"
+        android:textAppearance="?attr/textAppearanceLabelSmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintBottom_toTopOf="@id/button_forward"
+        app:layout_constraintEnd_toEndOf="@id/button_forward"
+        app:layout_constraintStart_toStartOf="@id/button_forward"
+        app:strokeColor="?attr/colorOnSurfaceVariant" />
+
+    <Button
+        android:id="@+id/button_forward"
+        style="@style/Assignment1.ColorButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorAccent"
+        android:letterSpacing="0.09"
+        android:text="@string/forward"
         android:textAllCaps="true"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        app:layout_constraintBottom_toTopOf="@id/textViewTermsAndConditions"
-        app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:strokeColor="?attr/colorAccent" />
-
-    <TextView
-        android:id="@+id/textViewTermsAndConditions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/auth_textView_termsAndConditions_bottom_margin"
-        android:gravity="center_horizontal"
-        android:text="@string/auth_activity_terms_and_conditions"
-        android:textAppearance="?attr/textAppearanceBodyMedium"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        app:layout_constraintBottom_toTopOf="@id/textViewNoAccount"
-        app:layout_constraintEnd_toEndOf="@id/buttonRegister"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@id/buttonRegister" />
-
-    <TextView
-        android:id="@+id/textViewNoAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/auth_activity_already_have_an_account"
-        android:textAppearance="?attr/textAppearanceLabelSmall"
-        android:textColor="?attr/colorOutline"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:textColor="?attr/colorOnTertiary"
         app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
-        app:layout_constraintEnd_toStartOf="@id/textViewSignUp"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/auth_textView_SingIn_start_margin"
-        android:text="@string/auth_activity_sign_in"
-        android:textAppearance="?attr/textAppearanceLabelSmall"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textViewNoAccount"
-        app:layout_constraintTop_toTopOf="@id/textViewNoAccount" />
+        app:layout_constraintEnd_toEndOf="@id/rightGuideline"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline" />
 
     <ProgressBar
         android:id="@+id/progressBar"

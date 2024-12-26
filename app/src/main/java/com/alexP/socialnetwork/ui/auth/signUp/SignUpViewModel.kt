@@ -1,4 +1,4 @@
-package com.alexP.socialnetwork.ui.auth.singUp
+package com.alexP.socialnetwork.ui.auth.signUp
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,18 +7,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.alexP.socialnetwork.data.models.RequestState
-import com.alexP.socialnetwork.data.repository.MainRepository
+import com.alexP.socialnetwork.ui.state.RequestState
 import com.alexp.datastore.DataStoreProvider
 import com.alexp.textvalidation.validateEmail
 import com.alexp.textvalidation.validatePassword
 import com.alexp.textvalidation.validator.base.ValidationResult
-import kotlinx.coroutines.CoroutineScope
+import com.alexp.webapi.repository.MainRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class SingUpViewModel(
+class SignUpViewModel(
     private val dataStore: DataStoreProvider,
     private val mainRepository: MainRepository,
 ) : ViewModel() {
@@ -26,26 +24,21 @@ class SingUpViewModel(
     private val _requestState = MutableLiveData<RequestState>()
     val requestState: LiveData<RequestState> = _requestState
 
-    private var job: Job? = null
 
     fun createUser(email: String, password: String) {
-        job = CoroutineScope(Dispatchers.IO).launch {
-            viewModelScope.launch {
-                _requestState.value = RequestState.Loading
-                mainRepository.createUser(email, password)
-                    .onSuccess { response ->
-                        _requestState.value = RequestState.Success
-                        dataStore.setAccessToken(response.data!!.accessToken)
-                        dataStore.setRefreshToken(response.data.refreshToken)
-                        dataStore.setUserId(response.data.user.id.toString())
-                    }.onFailure { error ->
-                        _requestState.value =
-                            RequestState.Error(error.message ?: "Unknown error")
-                    }
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            _requestState.postValue(RequestState.Loading)
+            mainRepository.createUser(email, password)
+                .onSuccess { response ->
+                    _requestState.postValue(RequestState.Success)
+                    dataStore.setAccessToken(response.data.accessToken)
+                    dataStore.setRefreshToken(response.data.refreshToken)
+                    dataStore.setUserId(response.data.user.id)
+                }.onFailure { error ->
+                    _requestState.postValue(RequestState.Error(error.message ?: "Unknown error"))
+                }
         }
     }
-
 
 
     fun validateEmailVm(email: String): ValidationResult {
@@ -62,7 +55,6 @@ class SingUpViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        job?.cancel()
         _requestState.postValue(RequestState.Initial)
     }
 
@@ -72,7 +64,7 @@ class SingUpViewModel(
             repository: MainRepository,
         ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                SingUpViewModel(dataStore, repository)
+                SignUpViewModel(dataStore, repository)
             }
         }
     }

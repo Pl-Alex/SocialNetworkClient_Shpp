@@ -182,7 +182,7 @@
         android:id="@+id/textViewSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/auth_textView_SingIn_start_margin"
+        android:layout_marginStart="@dimen/auth_textView_SignIn_start_margin"
         android:text="@string/log_in_fragment_sign_up"
         android:textAppearance="?attr/textAppearanceLabelSmall"
         android:textColor="?attr/colorOnSurfaceVariant"

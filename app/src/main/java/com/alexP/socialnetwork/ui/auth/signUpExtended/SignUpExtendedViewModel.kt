@@ -1,6 +1,5 @@
-package com.alexP.socialnetwork.ui.auth.singUpExtended
+package com.alexP.socialnetwork.ui.auth.signUpExtended
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,22 +7,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.alexP.socialnetwork.data.models.RequestState
-import com.alexP.socialnetwork.data.repository.MainRepository
+import com.alexP.socialnetwork.ui.state.RequestState
 import com.alexp.datastore.DataStoreProvider
-import com.alexp.textvalidation.validateEmail
-import com.alexp.textvalidation.validatePassword
 import com.alexp.textvalidation.validatePhone
 import com.alexp.textvalidation.validateUsername
 import com.alexp.textvalidation.validator.base.ValidationResult
-import kotlinx.coroutines.CoroutineScope
+import com.alexp.webapi.repository.MainRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class SingUpExtendedViewModel(
+class SignUpExtendedViewModel(
     private val dataStore: DataStoreProvider,
     private val mainRepository: MainRepository,
 ) : ViewModel() {
@@ -31,24 +25,17 @@ class SingUpExtendedViewModel(
     private val _requestState = MutableLiveData<RequestState>()
     val requestState: LiveData<RequestState> = _requestState
 
-    private var job: Job? = null
-
     fun editUser(username: String, phone: String) {
-        job = CoroutineScope(Dispatchers.IO).launch {
-            viewModelScope.launch {
-                _requestState.value = RequestState.Loading
-                val token = dataStore.getAccessToken().first()
-                val userId = dataStore.getUserId().first()
-                mainRepository.editUser(username, phone, userId, token)
-                    .onSuccess { response ->
-                         _requestState.value = RequestState.Success
-                    }.onFailure { error ->
-                        _requestState.value =
-                            RequestState.Error(error.message ?: "Unknown error")
-                    }
-
-
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            _requestState.postValue(RequestState.Loading)
+            val token = dataStore.getAccessToken().first()
+            val userId = dataStore.getUserId().first()
+            mainRepository.editUser(username, phone, userId, token)
+                .onSuccess {
+                    _requestState.postValue(RequestState.Success)
+                }.onFailure { error ->
+                    _requestState.postValue(RequestState.Error(error.message ?: "Unknown error"))
+                }
         }
     }
 
@@ -66,7 +53,6 @@ class SingUpExtendedViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        job?.cancel()
         _requestState.postValue(RequestState.Initial)
     }
 
@@ -76,7 +62,7 @@ class SingUpExtendedViewModel(
             repository: MainRepository,
         ): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                SingUpExtendedViewModel(dataStore, repository)
+                SignUpExtendedViewModel(dataStore, repository)
             }
         }
     }
