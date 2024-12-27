@@ -27,6 +27,9 @@ espresso = "3.6.1"
 okhttp = "4.11.0"
 retrofit = "2.11.0"
 
+# DI
+koinAndroid = "4.0.1"
+
 # Gradle plugins
 android-gradlePlugin = "8.6.1"
 
@@ -66,6 +69,11 @@ logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", ver
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-kotlinxSerialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+# DI
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinAndroid" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "android-gradlePlugin" }

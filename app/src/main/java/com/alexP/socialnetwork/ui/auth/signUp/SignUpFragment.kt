@@ -6,33 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.alexp.webapi.ApiService
-import com.alexp.webapi.repository.MainRepository
 import com.alexP.socialnetwork.databinding.FragmentSignUpBinding
 import com.alexP.socialnetwork.ui.base.BaseFragment
 import com.alexP.socialnetwork.ui.state.RequestState
 import com.alexP.socialnetwork.utils.getValidationResultMessage
-import com.alexp.datastore.DataStoreProvider
 import com.alexp.textvalidation.validator.base.ValidationResult
-import com.alexp.webapi.BASE_URL
-import com.alexp.webapi.getOkHttpClient
-import com.alexp.webapi.getRetrofitInstance
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
 
-    private val viewModel: SignUpViewModel by viewModels {
-        SignUpViewModel.createFactory(
-            DataStoreProvider(requireContext()),
-            MainRepository(
-                getRetrofitInstance(
-                    BASE_URL,
-                    getOkHttpClient()
-                ).create(ApiService::class.java)
-            )
-        )
-    }
+    private val viewModel: SignUpViewModel by viewModel()
 
     override fun inflate(inflater: LayoutInflater, container: ViewGroup?): FragmentSignUpBinding {
         return FragmentSignUpBinding.inflate(inflater, container, false)
@@ -53,8 +37,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                 onRegisterButtonPressed()
             }
             buttonSignInGoogle.setOnClickListener {
-                inputEditTextEmail.setText("123@gmail.com")
-                inputEditTextPassword.setText("123@dwddWD")
+                inputEditTextEmail.setText("123test@gmail.com")
+                inputEditTextPassword.setText("123test@")
             }
 
             inputEditTextEmail.setOnFocusChangeListener { _, hasFocus -> if (!hasFocus) validateEmail() }

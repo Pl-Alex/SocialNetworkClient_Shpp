@@ -55,15 +55,4 @@ class SignUpExtendedViewModel(
         super.onCleared()
         _requestState.postValue(RequestState.Initial)
     }
-
-    companion object {
-        fun createFactory(
-            dataStore: DataStoreProvider,
-            repository: MainRepository,
-        ): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SignUpExtendedViewModel(dataStore, repository)
-            }
-        }
-    }
 }

@@ -8,8 +8,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 
-const val BASE_URL = "http://178.63.9.114:7777/api/"
-
 fun getOkHttpClient(): OkHttpClient {
     return OkHttpClient().newBuilder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

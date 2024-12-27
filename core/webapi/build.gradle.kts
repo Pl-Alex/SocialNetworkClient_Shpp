@@ -23,4 +23,7 @@ dependencies{
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.serialization.json)
 
+    // DI
+    implementation(libs.koin.core)
+
 }
