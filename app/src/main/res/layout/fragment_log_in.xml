@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurfaceVariant"
-    tools:context=".ui.auth.logIn.LogInFragment">
+    tools:context=".presentation.auth.logIn.LogInFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideline"
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@id/textViewLetsGetAcquainted" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputLayoutUserName"
+        android:id="@+id/inputLayoutEmail"
         style="@style/CustomTextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@id/textViewFillOutTheProfileTip">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputEditTextUserName"
+            android:id="@+id/inputEditTextEmail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textEmailAddress"
@@ -91,7 +91,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputLayoutPhone"
+        android:id="@+id/inputLayoutPassword"
         style="@style/CustomTextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -107,10 +107,10 @@
         app:hintTextColor="?attr/colorOutline"
         app:layout_constraintEnd_toEndOf="@id/rightGuideline"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toBottomOf="@id/inputLayoutUserName">
+        app:layout_constraintTop_toBottomOf="@id/inputLayoutEmail">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputEditTextPhone"
+            android:id="@+id/inputEditTextPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPassword"
@@ -132,8 +132,9 @@
         android:text="@string/auth_activity_remember_me"
         android:textAppearance="?attr/textAppearanceLabelSmall"
         android:textColor="?attr/colorOutline"
+        android:theme="@style/checkBox"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toBottomOf="@id/inputLayoutPhone"
+        app:layout_constraintTop_toBottomOf="@id/inputLayoutPassword"
         tools:ignore="RtlSymmetry" />
 
     <TextView
@@ -189,5 +190,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textViewNoAccount"
         app:layout_constraintTop_toTopOf="@id/textViewNoAccount" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

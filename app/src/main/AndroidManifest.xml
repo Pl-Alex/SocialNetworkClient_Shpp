@@ -19,7 +19,7 @@
         tools:targetApi="33">
 
         <activity
-            android:name=".ui.auth.AuthActivity"
+            android:name=".presentation.auth.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.main.MainActivity" />
+        <activity android:name=".presentation.main.MainActivity" />
 
     </application>
 </manifest>

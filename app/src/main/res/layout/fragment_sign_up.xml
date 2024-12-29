@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurfaceVariant"
-    tools:context=".ui.auth.signUp.SignUpFragment">
+    tools:context=".presentation.auth.signUp.SignUpFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/topGuideline"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context=".ui.main.myprofile.MyProfileFragment">
+    tools:context=".presentation.main.myprofile.MyProfileFragment">
 
     <View
         android:id="@+id/view_topBackground"

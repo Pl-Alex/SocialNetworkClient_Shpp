@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/contactsFragment"
-        android:name="com.alexP.socialnetwork.ui.main.contacts.ContactsFragment"
+        android:name="com.alexP.socialnetwork.presentation.main.contacts.ContactsFragment"
         android:label="fragment_contacts"
         tools:layout="@layout/fragment_contacts" />
     <fragment
         android:id="@+id/contactsDetailsFragment"
-        android:name="com.alexP.socialnetwork.ui.main.contactsdetails.ContactsDetailsFragment"
+        android:name="com.alexP.socialnetwork.presentation.main.contactsdetails.ContactsDetailsFragment"
         android:label="fragment_contact_details"
         tools:layout="@layout/fragment_contact_details" >
         <argument
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.alexP.socialnetwork.ui.main.viewpager.ViewPagerFragment"
+        android:name="com.alexP.socialnetwork.presentation.main.viewpager.ViewPagerFragment"
         android:label="ViewPagerFragment" >
         <action
             android:id="@+id/action_viewPagerFragment_to_myProfileFragment"
@@ -47,12 +47,12 @@
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.alexP.socialnetwork.ui.main.myprofile.MyProfileFragment"
+        android:name="com.alexP.socialnetwork.presentation.main.myprofile.MyProfileFragment"
         android:label="fragment_myprofile"
         tools:layout="@layout/fragment_myprofile" />
     <dialog
         android:id="@+id/addContactFragment"
-        android:name="com.alexP.socialnetwork.ui.main.addcontact.AddContactFragment"
+        android:name="com.alexP.socialnetwork.presentation.main.addcontact.AddContactFragment"
         android:label="fragment_dialog_add_contact"
         tools:layout="@layout/fragment_dialog_add_contact" />
 </navigation>
