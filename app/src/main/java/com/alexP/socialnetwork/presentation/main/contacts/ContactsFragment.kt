@@ -168,7 +168,6 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>() {
                 resources.getDimensionPixelSize(R.dimen.contacts_recyclerView_vertical_spacing)
             )
         )
-        rv
     }
 
     private fun toggleSelection(contact: Contact) {
