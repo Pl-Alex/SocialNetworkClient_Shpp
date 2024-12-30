@@ -52,7 +52,6 @@ fun getValidationResultMessage(validationResult: ValidationResult): Int? {
         ValidationResult.EMPTY_FAILED -> R.string.text_validation_error_empty_field
         ValidationResult.EMAIL_FAILED -> R.string.text_validation_error_email
         ValidationResult.INVALID_CHARACTERS_FAILED -> R.string.text_validation_error_contain_invalid_characters
-        ValidationResult.NO_SPECIAL_CHARACTERS_FAILED -> R.string.text_validation_error_needs_specified_characters
         ValidationResult.MIN_LENGTH_FAILED -> R.string.text_validation_error_min_pass_length
         ValidationResult.MAX_LENGTH_FAILED -> R.string.text_validation_error_max_pass_length
     }

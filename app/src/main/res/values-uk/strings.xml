@@ -17,7 +17,7 @@
     <string name="auth_activity_lets_get_acquainted">Давай знайомитись</string>
     <string name="text_validation_error_empty_field">Заповніть пусте поле!</string>
     <string name="text_validation_error_email">Введіть існуючий email!</string>
-    <string name="text_validation_error_min_pass_length">Пароль повинен містити щонайменше 8 знаків</string>
+    <string name="text_validation_error_min_pass_length">Пароль повинен містити щонайменше 6 знаків</string>
     <string name="text_validation_error_max_pass_length">Пароль повинен бути меншим за 24 знаки</string>
     <string name="text_validation_error_contain_invalid_characters">Пароль мусить містити тільки A-Z,  a-z, числа або спеціальні символи</string>
     <string name="text_validation_error_needs_specified_characters">Пароль мусить містити як мінімум один знак кожного типу: A-Z,  a-z, числа або спеціальні символи</string>

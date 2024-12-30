@@ -10,6 +10,7 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 fun getOkHttpClient(): OkHttpClient {
     return OkHttpClient().newBuilder()
+        .addInterceptor(CustomInterceptor())
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 }

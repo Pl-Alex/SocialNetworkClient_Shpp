@@ -53,24 +53,20 @@ class LogInViewModel(
     fun updateEmailFormField(email: String) {
         val validationResult = validateEmail(email)
         val emailError = getValidationResultMessage(validationResult)
-        _logInFormState.postValue(
-            _logInFormState.value?.copy(
-                email = email,
-                emailError = emailError,
-                isDataValid = emailError == null && _logInFormState.value?.passwordError == null
-            )
+        _logInFormState.value = _logInFormState.value?.copy(
+            email = email,
+            emailError = emailError,
+            isDataValid = emailError == null && _logInFormState.value?.passwordError == null
         )
     }
 
     fun updatePasswordFormField(password: String) {
         val validationResult = validatePassword(password)
         val passwordError = getValidationResultMessage(validationResult)
-        _logInFormState.postValue(
-            _logInFormState.value?.copy(
-                password = password,
-                passwordError = passwordError,
-                isDataValid = passwordError == null && _logInFormState.value?.emailError == null
-            )
+        _logInFormState.value = _logInFormState.value?.copy(
+            password = password,
+            passwordError = passwordError,
+            isDataValid = passwordError == null && _logInFormState.value?.emailError == null
         )
     }
 

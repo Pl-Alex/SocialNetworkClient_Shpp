@@ -19,7 +19,7 @@
     <string name="auth_activity_lets_get_acquainted">Let\'s get acquainted</string>
     <string name="text_validation_error_empty_field">Please, fill empty field!</string>
     <string name="text_validation_error_email">Please, enter correct email!</string>
-    <string name="text_validation_error_min_pass_length">"Password must have at least 8 characters "</string>
+    <string name="text_validation_error_min_pass_length">"Password must have at least 6 characters "</string>
     <string name="text_validation_error_max_pass_length">Password must have maximum 24 characters</string>
     <string name="text_validation_error_contain_invalid_characters">Password must contains only A-Z, a-z, numbers or special characters</string>
     <string name="text_validation_error_needs_specified_characters">Password must contains at least one character of each type: A-Z, a-z, numbers and special characters</string>
