@@ -26,7 +26,7 @@
         android:layout_width="@dimen/item_contact_contact_image_size"
         android:layout_height="@dimen/item_contact_contact_image_size"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_contact_image"
+        android:src="@drawable/default_profile_image_2"
         app:layout_constraintStart_toEndOf="@id/radioButton_contact"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />

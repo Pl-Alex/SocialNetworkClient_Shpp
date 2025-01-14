@@ -8,30 +8,31 @@
     android:padding="@dimen/google_custom_view_padding"
     android:background="@drawable/google_custom_view_background">
 
+    <androidx.constraintlayout.helper.widget.Flow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:constraint_referenced_ids="icon,button_text"
+        app:flow_horizontalGap="@dimen/google_custom_view_gap"
+        app:flow_horizontalStyle="packed"
+        app:flow_wrapMode="aligned"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/google_custom_view_icon_end_margin"
         android:importantForAccessibility="no"
-        android:src="@drawable/google_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button_text"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/google_logo"/>
 
     <TextView
         android:id="@+id/button_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/icon"
         android:text="@string/auth_activity_google"
         android:textColor="@color/black"
         android:textAllCaps="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textAppearance="?attr/textAppearanceLabelMedium"
-        app:layout_constraintStart_toEndOf="@id/icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textAppearance="?attr/textAppearanceLabelMedium" />
 </merge>

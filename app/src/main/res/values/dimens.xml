@@ -8,7 +8,7 @@
     <dimen name="auth_activity_button_signInGoogle_cornerRadius">6dp</dimen>
     <dimen name="auth_button_register_bottom_margin">16dp</dimen>
     <dimen name="auth_buttons_flow_gap">8dp</dimen>
-    <dimen name="auth_checkBox_remember_top_margin">16dp</dimen>
+    <dimen name="auth_checkBox_remember_top_margin">8dp</dimen>
     <dimen name="auth_editText_padding">39dp</dimen>
     <dimen name="auth_inputLayout_email_end_margin">16dp</dimen>
     <dimen name="auth_inputLayout_email_top_margin">24dp</dimen>
@@ -16,10 +16,10 @@
     <dimen name="auth_label1_top_margin">145dp</dimen>
     <dimen name="auth_label2_top_margin">8dp</dimen>
     <dimen name="auth_landscape_label1_top_margin">16dp</dimen>
-    <dimen name="auth_layout_button_singInGoogle_margin_bottom">8dp</dimen>
+    <dimen name="auth_layout_button_signInGoogle_margin_bottom">8dp</dimen>
     <dimen name="auth_layout_margin">16dp</dimen>
     <dimen name="auth_orLabel_top_margin">8dp</dimen>
-    <dimen name="auth_textView_SingIn_start_margin">12dp</dimen>
+    <dimen name="auth_textView_SignIn_start_margin">12dp</dimen>
     <dimen name="auth_textView_orLabel_bottom_margin">8dp</dimen>
     <dimen name="auth_textView_termsAndConditions_bottom_margin">8dp</dimen>
     <dimen name="auth_textView_termsAndConditions_top_margin">16dp</dimen>
@@ -27,7 +27,7 @@
     <dimen name="contacts_recyclerView_horizontal_spacing">16dp</dimen>
     <dimen name="contacts_recyclerView_vertical_spacing">16dp</dimen>
     <dimen name="google_custom_button_cornerRadius">6dp</dimen>
-    <dimen name="google_custom_view_icon_end_margin">8dp</dimen>
+    <dimen name="google_custom_view_gap">8dp</dimen>
     <dimen name="google_custom_view_padding">8dp</dimen>
     <dimen name="item_contact_contact_image_size">50dp</dimen>
     <dimen name="item_contact_textView_contact_name_surname_margin_start">16dp</dimen>
@@ -38,10 +38,12 @@
     <dimen name="my_profile_imageView_profileImage_end_margin">24dp</dimen>
     <dimen name="my_profile_imageView_socialLogo1_bottom_margin">95dp</dimen>
     <dimen name="my_profile_layout_margin">16dp</dimen>
-    <dimen name="my_profile_picture_size">113dp</dimen>
+    <dimen name="profile_picture_size">113dp</dimen>
     <dimen name="my_profile_textView_address_top_margin">16dp</dimen>
     <dimen name="my_profile_textView_career_top_margin">8dp</dimen>
     <dimen name="my_profile_textView_nameSurname_top_margin">24dp</dimen>
     <dimen name="my_profile_textView_settingsTip_bottom_margin">16dp</dimen>
     <dimen name="contacts_profile_bottom_margin">150dp</dimen>
+    <dimen name="checkbox_gap">8dp</dimen>
+    <dimen name="signUp_fragment_imageView_profileImage_bottom_margin">28dp</dimen>
 </resources>

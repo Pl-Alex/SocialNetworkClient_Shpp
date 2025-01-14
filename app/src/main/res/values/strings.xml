@@ -19,7 +19,7 @@
     <string name="auth_activity_lets_get_acquainted">Let\'s get acquainted</string>
     <string name="text_validation_error_empty_field">Please, fill empty field!</string>
     <string name="text_validation_error_email">Please, enter correct email!</string>
-    <string name="text_validation_error_min_pass_length">"Password must have at least 8 characters "</string>
+    <string name="text_validation_error_min_pass_length">"Password must have at least 6 characters "</string>
     <string name="text_validation_error_max_pass_length">Password must have maximum 24 characters</string>
     <string name="text_validation_error_contain_invalid_characters">Password must contains only A-Z, a-z, numbers or special characters</string>
     <string name="text_validation_error_needs_specified_characters">Password must contains at least one character of each type: A-Z, a-z, numbers and special characters</string>
@@ -49,5 +49,16 @@
     <string name="profile">Profile</string>
     <string name="message">message</string>
     <string name="contacts_deleted">Selected contacts are deleted</string>
+    <string name="auth_activity_forgot_password">Forgot your password?</string>
+    <string name="log_in_fragment_hello">Hello!</string>
+    <string name="log_in_fragment_enter_your_credentials">Enter your email and password below</string>
+    <string name="auth_activity_no_account">Don\'t have account?</string>
+    <string name="log_in_fragment_sign_up">Sign up</string>
+    <string name="log_in_fragment_login">Login</string>
+    <string name="sign_up_fragment_profile_data">Your profile data</string>
+    <string name="user_name">User name</string>
+    <string name="mobile_phone">Mobile phone</string>
+    <string name="cancel">Cancel</string>
+    <string name="forward">Forward</string>
 
 </resources>
