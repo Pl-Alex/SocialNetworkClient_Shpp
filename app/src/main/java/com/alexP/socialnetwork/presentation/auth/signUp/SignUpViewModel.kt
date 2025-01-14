@@ -4,54 +4,73 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexP.socialnetwork.presentation.state.RequestState
-import com.alexp.datastore.DataStoreProvider
+import com.alexP.socialnetwork.data.repository.AuthRepository
+import com.alexP.socialnetwork.utils.getValidationResultMessage
 import com.alexp.textvalidation.validateEmail
 import com.alexp.textvalidation.validatePassword
-import com.alexp.textvalidation.validator.base.ValidationResult
-import com.alexp.webapi.repository.MainRepository
+import com.alexp.webapi.models.AuthData
+import com.alexp.webapi.models.state.ResponseState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(
-    private val dataStore: DataStoreProvider,
-    private val mainRepository: MainRepository,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    private val _requestState = MutableLiveData<RequestState>()
-    val requestState: LiveData<RequestState> = _requestState
+    private val _responseState = MutableLiveData<ResponseState<AuthData>>()
+    val responseState: LiveData<ResponseState<AuthData>> = _responseState
 
+    private val _singUpFormState = MutableLiveData<SingUpFormState>().apply {
+        value = SingUpFormState(email = "", password = "")
+    }
+    val singUpFormState: LiveData<SingUpFormState> = _singUpFormState
+
+    fun checkData(): Boolean {
+        val formState = _singUpFormState.value
+        if (formState?.isDataValid == false) {
+            updateEmailFormField(formState.email)
+            updatePasswordFormField(formState.password)
+            return false
+        }
+        return true
+    }
 
     fun createUser(email: String, password: String) {
+        _responseState.postValue(ResponseState.Loading)
         viewModelScope.launch(Dispatchers.IO) {
-            _requestState.postValue(RequestState.Loading)
-            mainRepository.createUser(email, password)
-                .onSuccess { response ->
-                    _requestState.postValue(RequestState.Success)
-                    dataStore.setAccessToken(response.data.accessToken)
-                    dataStore.setRefreshToken(response.data.refreshToken)
-                    dataStore.setUserId(response.data.user.id)
-                }.onFailure { error ->
-                    _requestState.postValue(RequestState.Error(error.message ?: "Unknown error"))
-                }
+            _responseState.postValue(authRepository.createUser(email, password))
         }
     }
 
-
-    fun validateEmailVm(email: String): ValidationResult {
-        return validateEmail(email)
+    fun checkDataAndCreateUser() {
+        if (checkData()) {
+            val email = _singUpFormState.value?.email ?: return
+            val password = _singUpFormState.value?.password ?: return
+            createUser(email, password)
+        }
     }
 
-    fun validatePasswordVm(password: String): ValidationResult {
-        return validatePassword(password)
+    fun updateEmailFormField(email: String) {
+        val validationResult = validateEmail(email)
+        val emailError = getValidationResultMessage(validationResult)
+        _singUpFormState.value = _singUpFormState.value?.copy(
+            email = email,
+            emailError = emailError,
+            isDataValid = emailError == null && _singUpFormState.value?.passwordError == null
+        )
+    }
+
+    fun updatePasswordFormField(password: String) {
+        val validationResult = validatePassword(password)
+        val passwordError = getValidationResultMessage(validationResult)
+        _singUpFormState.value = _singUpFormState.value?.copy(
+            password = password,
+            passwordError = passwordError,
+            isDataValid = passwordError == null && _singUpFormState.value?.emailError == null
+        )
     }
 
     fun resetRegistrationState() {
-        _requestState.postValue(RequestState.Initial)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        _requestState.postValue(RequestState.Initial)
+        _responseState.postValue(ResponseState.Initial)
     }
 }

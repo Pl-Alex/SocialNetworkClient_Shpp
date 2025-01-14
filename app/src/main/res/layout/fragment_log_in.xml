@@ -149,7 +149,7 @@
         app:layout_constraintTop_toTopOf="@id/checkBoxRemember" />
 
     <Button
-        android:id="@+id/buttonRegister"
+        android:id="@+id/buttonLogIn"
         style="@style/Assignment1.BorderedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

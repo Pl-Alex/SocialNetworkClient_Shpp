@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.alexP.socialnetwork.databinding.FragmentSignUpExtendedBinding
 import com.alexP.socialnetwork.presentation.base.BaseFragment
-import com.alexP.socialnetwork.presentation.state.RequestState
-import com.alexP.socialnetwork.utils.getValidationResultMessage
-import com.alexp.textvalidation.validator.base.ValidationResult
+import com.alexp.webapi.models.state.ResponseState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>() {
@@ -28,69 +27,49 @@ class SignUpExtendedFragment : BaseFragment<FragmentSignUpExtendedBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
-        resetViewModelState()
     }
 
     private fun setListeners() {
         with(binding) {
             buttonForward.setOnClickListener {
-                onForwardButtonPressed()
+                viewModel.checkDataAndEditUser()
             }
             buttonCancel.setOnClickListener {
                 findNavController().popBackStack()
             }
-            inputEditTextUserName.setOnFocusChangeListener { _, hasFocus -> if (!hasFocus) validateUserName() }
-            inputEditTextPhone.setOnFocusChangeListener { _, hasFocus -> if (!hasFocus) validatePhone() }
+            inputEditTextPhone.addTextChangedListener { viewModel.updatePhoneFormField(it.toString()) }
+            inputEditTextUserName.addTextChangedListener { viewModel.updateUserNameFormField(it.toString()) }
+
         }
     }
 
     private fun setObservers() {
-        viewModel.requestState.observe(viewLifecycleOwner)
+        viewModel.responseState.observe(viewLifecycleOwner)
         { state ->
             when (state) {
-                RequestState.Success -> {
+                is ResponseState.Success -> {
                     binding.progressBar.visibility = View.GONE
                     findNavController().navigate(SignUpExtendedFragmentDirections.actionSignUpExtendedFragmentToNavGraph())
+                    resetViewModelState()
                 }
 
-                is RequestState.Error -> {
+                is ResponseState.Failure -> {
                     binding.progressBar.visibility = View.GONE
                     Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                 }
 
-                RequestState.Initial -> {}
-                RequestState.Loading -> binding.progressBar.visibility = View.VISIBLE
+                ResponseState.Initial -> {}
+                ResponseState.Loading -> binding.progressBar.visibility = View.VISIBLE
             }
         }
-    }
 
-    private fun onForwardButtonPressed() {
-        if (!isAnyEnteredDataInvalid()) {
-            viewModel.editUser(
-                binding.inputEditTextPhone.text.toString(),
-                binding.inputEditTextPhone.text.toString()
-            )
+        viewModel.singUpExtendedFormState.observe(viewLifecycleOwner)
+        { state ->
+            with(binding) {
+                inputLayoutPhone.error = state.phoneError?.let { getString(it) }
+                inputLayoutUserName.error = state.userNameError?.let { getString(it) }
+            }
         }
-    }
-
-    private fun isAnyEnteredDataInvalid(): Boolean {
-        val isUsernameValid = validateUserName()
-        val isPhoneValid = validatePhone()
-        return !(isUsernameValid && isPhoneValid)
-    }
-
-    private fun validateUserName(): Boolean {
-        val validationResult = viewModel.validateUserNameVm(binding.inputEditTextUserName.text.toString())
-        binding.inputLayoutUserName.error =
-            getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
-        return validationResult == ValidationResult.SUCCESS
-    }
-
-    private fun validatePhone(): Boolean {
-        val validationResult = viewModel.validatePhoneVm(binding.inputEditTextPhone.text.toString())
-        binding.inputLayoutPhone.error =
-            getValidationResultMessage(validationResult)?.let { getString(it) } ?: ""
-        return validationResult == ValidationResult.SUCCESS
     }
 
     private fun resetViewModelState() {

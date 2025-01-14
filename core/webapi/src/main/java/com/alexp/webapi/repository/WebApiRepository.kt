@@ -2,20 +2,20 @@ package com.alexp.webapi.repository
 
 import com.alexp.webapi.ApiService
 import com.alexp.webapi.models.ApiErrorResponse
-import com.alexp.webapi.models.ApiResponse
 import com.alexp.webapi.models.AuthData
 import com.alexp.webapi.models.EmailPassword
 import com.alexp.webapi.models.User
 import com.alexp.webapi.models.UserData
+import com.alexp.webapi.models.state.ResponseState
 import kotlinx.serialization.json.Json
 
-class MainRepository(private val apiService: ApiService) {
+class WebApiRepository(private val apiService: ApiService) {
 
-    suspend fun createUser(email: String, password: String): Result<ApiResponse<AuthData>> {
+    suspend fun createUser(email: String, password: String): ResponseState<AuthData> {
         return try {
             val response = apiService.createUser(email, password)
             if (response.isSuccessful) {
-                Result.success(response.body()!!)
+                ResponseState.Success(response.body()!!.data)
             } else {
                 val errorResponse = response.errorBody()?.string()?.let {
                     // Api error response is not a valid json, so we need to add a closing bracket
@@ -23,27 +23,27 @@ class MainRepository(private val apiService: ApiService) {
                         it.trimEnd('}') + "}"
                     )
                 }
-                Result.failure(Exception(errorResponse?.message))
+                ResponseState.Failure(errorResponse?.message ?: "Unknown error")
             }
         } catch (e: Exception) {
             println("Exception: $e")
-            Result.failure(e)
+            ResponseState.Failure(e.message ?: "Unknown error")
         }
     }
 
-    suspend fun authorize(email: String, password: String): Result<ApiResponse<AuthData>> {
+    suspend fun authorize(email: String, password: String): ResponseState<AuthData> {
         return try {
             val response = apiService.authorize(EmailPassword(email, password))
             if (response.isSuccessful) {
-                Result.success(response.body()!!)
+                ResponseState.Success(response.body()!!.data)
             } else {
                 val errorResponse = response.errorBody()?.string()
                     ?.let { Json.decodeFromString<ApiErrorResponse>(it) }
-                Result.failure(Exception(errorResponse?.message))
+                ResponseState.Failure(errorResponse?.message ?: "Unknown error")
             }
         } catch (e: Exception) {
             println("Exception: $e")
-            Result.failure(e)
+            ResponseState.Failure(e.message ?: "Unknown error")
         }
     }
 
@@ -52,21 +52,20 @@ class MainRepository(private val apiService: ApiService) {
         phone: String,
         userId: Int,
         accessToken: String,
-    ): Result<ApiResponse<UserData>> {
-
+    ): ResponseState<UserData> {
         return try {
             val response =
                 apiService.editUser(userId, accessToken, User(name = username, phone = phone))
             if (response.isSuccessful) {
-                Result.success(response.body()!!)
+                ResponseState.Success(response.body()!!.data)
             } else {
                 val errorResponse = response.errorBody()?.string()
                     ?.let { Json.decodeFromString<ApiErrorResponse>(it) }
-                Result.failure(Exception(errorResponse?.message))
+                ResponseState.Failure(errorResponse?.message ?: "Unknown error")
             }
         } catch (e: Exception) {
             println("Exception: $e")
-            Result.failure(e)
+            ResponseState.Failure(e.message ?: "Unknown error")
         }
     }
 }

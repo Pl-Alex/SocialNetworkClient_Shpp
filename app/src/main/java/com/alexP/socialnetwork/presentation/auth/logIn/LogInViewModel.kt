@@ -4,49 +4,51 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexP.socialnetwork.presentation.state.RequestState
+import com.alexP.socialnetwork.data.repository.AuthRepository
 import com.alexP.socialnetwork.utils.getValidationResultMessage
-import com.alexp.datastore.DataStoreProvider
 import com.alexp.textvalidation.validateEmail
 import com.alexp.textvalidation.validatePassword
-import com.alexp.webapi.repository.MainRepository
+import com.alexp.webapi.models.AuthData
+import com.alexp.webapi.models.state.ResponseState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class LogInViewModel(
-    private val dataStore: DataStoreProvider,
-    private val mainRepository: MainRepository,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    private val _requestState = MutableLiveData<RequestState>()
-    val requestState: LiveData<RequestState> = _requestState
+    private val _responseState = MutableLiveData<ResponseState<AuthData>>()
+    val responseState: LiveData<ResponseState<AuthData>> = _responseState
 
     private val _logInFormState = MutableLiveData<LogInFormState>().apply {
         value = LogInFormState(email = "", password = "")
     }
     val logInFormState: LiveData<LogInFormState> = _logInFormState
 
-    fun authorize() {
-        if (_logInFormState.value?.isDataValid == false){
-            updateEmailFormField(_logInFormState.value?.email ?: "")
-            updatePasswordFormField(_logInFormState.value?.password ?: "")
-            return
-        }
 
-        val email = _logInFormState.value?.email ?: return
-        val password = _logInFormState.value?.password ?: return
+    fun checkData(): Boolean {
+        val formState = _logInFormState.value
+        if (formState?.isDataValid == false) {
+            updateEmailFormField(formState.email)
+            updatePasswordFormField(formState.password)
+            return false
+        }
+        return true
+    }
+
+    fun authorize(email: String, password: String) {
+        _responseState.postValue(ResponseState.Loading)
         viewModelScope.launch(Dispatchers.IO) {
-            _requestState.postValue(RequestState.Loading)
-            mainRepository.authorize(email, password)
-                .onSuccess { response ->
-                    _requestState.postValue(RequestState.Success)
-                    dataStore.setAccessToken(response.data.accessToken)
-                    dataStore.setRefreshToken(response.data.refreshToken)
-                    dataStore.setUserId(response.data.user.id)
-                }.onFailure { error ->
-                    _requestState.postValue(RequestState.Error(error.message ?: "Unknown error"))
-                }
+            _responseState.postValue(authRepository.authorize(email, password))
+        }
+    }
+
+    fun checkDataAndAuthorize() {
+        if (checkData()) {
+            val email = _logInFormState.value?.email ?: return
+            val password = _logInFormState.value?.password ?: return
+            authorize(email, password)
         }
     }
 
@@ -71,11 +73,6 @@ class LogInViewModel(
     }
 
     fun resetRequestState() {
-        _requestState.postValue(RequestState.Initial)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        _requestState.postValue(RequestState.Initial)
+        _responseState.postValue(ResponseState.Initial)
     }
 }

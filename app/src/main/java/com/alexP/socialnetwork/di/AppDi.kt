@@ -1,10 +1,12 @@
 package com.alexP.socialnetwork.di
 
 import com.alexP.socialnetwork.BuildConfig
+import com.alexP.socialnetwork.data.repository.AuthRepository
 import com.alexP.socialnetwork.presentation.auth.logIn.LogInViewModel
 import com.alexP.socialnetwork.presentation.auth.signUp.SignUpViewModel
 import com.alexP.socialnetwork.presentation.auth.signUpExtended.SignUpExtendedViewModel
 import com.alexp.datastore.DataStoreProvider
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -14,23 +16,22 @@ val appModule = module {
 
     viewModel<SignUpViewModel> {
         SignUpViewModel(
-            dataStore = DataStoreProvider(get()),
-            mainRepository = get()
+            authRepository = get()
         )
     }
 
     viewModel<SignUpExtendedViewModel> {
         SignUpExtendedViewModel(
-            dataStore = DataStoreProvider(get()),
-            mainRepository = get()
+            authRepository = get()
         )
     }
 
     viewModel<LogInViewModel> {
         LogInViewModel(
-            dataStore = DataStoreProvider(get()),
-            mainRepository = get()
+            authRepository = get()
         )
     }
+
+    factory<AuthRepository> { AuthRepository(get(), DataStoreProvider(androidContext())) }
 
 }

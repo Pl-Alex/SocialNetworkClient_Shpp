@@ -9,7 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.alexP.socialnetwork.databinding.FragmentLogInBinding
 import com.alexP.socialnetwork.presentation.base.BaseFragment
-import com.alexP.socialnetwork.presentation.state.RequestState
+import com.alexp.webapi.models.state.ResponseState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LogInFragment : BaseFragment<FragmentLogInBinding>() {
@@ -24,52 +24,49 @@ class LogInFragment : BaseFragment<FragmentLogInBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
         setObservers()
-        resetViewModelState()
-    }
-
-    private fun setObservers() {
-        viewModel.requestState.observe(viewLifecycleOwner)
-        { state ->
-            when (state) {
-                RequestState.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToNavGraph())
-                }
-
-                is RequestState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
-                }
-
-                RequestState.Initial -> {}
-                RequestState.Loading -> binding.progressBar.visibility = View.VISIBLE
-            }
-        }
-
-        viewModel.logInFormState.observe(viewLifecycleOwner) { state ->
-            val emailError = if (state.emailError != null) getString(state.emailError) else null
-            binding.inputLayoutEmail.error = emailError
-
-            val passwordError = if (state.passwordError != null) getString(state.passwordError) else null
-            binding.inputLayoutPassword.error = passwordError
-        }
     }
 
     private fun setListeners() {
         with(binding) {
-            buttonRegister.setOnClickListener {
-                viewModel.authorize()
+            buttonLogIn.setOnClickListener {
+                viewModel.checkDataAndAuthorize()
             }
             textViewSignUp.setOnClickListener {
                 findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToSignUpFragment())
             }
+            inputEditTextEmail.addTextChangedListener { viewModel.updateEmailFormField(it.toString()) }
+            inputEditTextPassword.addTextChangedListener { viewModel.updatePasswordFormField(it.toString()) }
 
-            inputEditTextEmail.addTextChangedListener{
-                viewModel.updateEmailFormField(binding.inputEditTextEmail.text.toString())
+            textForgotPassword.setOnClickListener {
+                inputEditTextEmail.setText("1234test@gmail.com")
+                inputEditTextPassword.setText("123test@")
             }
-            inputEditTextPassword.addTextChangedListener{
-                viewModel.updatePasswordFormField(binding.inputEditTextPassword.text.toString())
+        }
+    }
+
+    private fun setObservers() {
+        viewModel.responseState.observe(viewLifecycleOwner)
+        { state ->
+            when (state) {
+                is ResponseState.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToNavGraph())
+                    resetViewModelState()
+                }
+
+                is ResponseState.Failure -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                }
+
+                ResponseState.Initial -> {}
+                ResponseState.Loading -> binding.progressBar.visibility = View.VISIBLE
             }
+        }
+
+        viewModel.logInFormState.observe(viewLifecycleOwner) { state ->
+            binding.inputLayoutEmail.error = state.emailError?.let { getString(it) }
+            binding.inputLayoutPassword.error = state.passwordError?.let { getString(it) }
         }
     }
 

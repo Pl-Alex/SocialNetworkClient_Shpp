@@ -19,7 +19,7 @@ class MyProfileViewModel(
 
     fun cleanStorage() {
         viewModelScope.launch {
-            dataStore.cleanStorage()
+            dataStore.cleanDataStore()
         }
     }
 

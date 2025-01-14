@@ -4,52 +4,73 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexP.socialnetwork.presentation.state.RequestState
-import com.alexp.datastore.DataStoreProvider
+import com.alexP.socialnetwork.data.repository.AuthRepository
+import com.alexP.socialnetwork.utils.getValidationResultMessage
 import com.alexp.textvalidation.validatePhone
 import com.alexp.textvalidation.validateUsername
-import com.alexp.textvalidation.validator.base.ValidationResult
-import com.alexp.webapi.repository.MainRepository
+import com.alexp.webapi.models.UserData
+import com.alexp.webapi.models.state.ResponseState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SignUpExtendedViewModel(
-    private val dataStore: DataStoreProvider,
-    private val mainRepository: MainRepository,
+    val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    private val _requestState = MutableLiveData<RequestState>()
-    val requestState: LiveData<RequestState> = _requestState
+    private val _responseState = MutableLiveData<ResponseState<UserData>>()
+    val responseState: LiveData<ResponseState<UserData>> = _responseState
+
+    private val _singUpExtendedFormState = MutableLiveData<SingUpExtendedFormState>().apply {
+        value = SingUpExtendedFormState(phone = "", userName = "")
+    }
+    val singUpExtendedFormState: LiveData<SingUpExtendedFormState> = _singUpExtendedFormState
+
+    fun checkData(): Boolean {
+        val formState = _singUpExtendedFormState.value
+        if (formState?.isDataValid == false) {
+            updatePhoneFormField(formState.phone)
+            updateUserNameFormField(formState.userName)
+            return false
+        }
+        return true
+    }
 
     fun editUser(username: String, phone: String) {
+        _responseState.postValue(ResponseState.Loading)
         viewModelScope.launch(Dispatchers.IO) {
-            _requestState.postValue(RequestState.Loading)
-            val token = dataStore.getAccessToken().first()
-            val userId = dataStore.getUserId().first()
-            mainRepository.editUser(username, phone, userId, token)
-                .onSuccess {
-                    _requestState.postValue(RequestState.Success)
-                }.onFailure { error ->
-                    _requestState.postValue(RequestState.Error(error.message ?: "Unknown error"))
-                }
+            _responseState.postValue(authRepository.editUser(username, phone))
         }
     }
 
-    fun validateUserNameVm(userName: String): ValidationResult {
-        return validateUsername(userName)
+    fun checkDataAndEditUser() {
+        if (checkData()) {
+            val userName = _singUpExtendedFormState.value?.userName ?: return
+            val phone = _singUpExtendedFormState.value?.phone ?: return
+            editUser(userName, phone)
+        }
     }
 
-    fun validatePhoneVm(phone: String): ValidationResult {
-        return validatePhone(phone)
+    fun updatePhoneFormField(phone: String) {
+        val validationResult = validatePhone(phone)
+        val phoneError = getValidationResultMessage(validationResult)
+        _singUpExtendedFormState.value = _singUpExtendedFormState.value?.copy(
+            phone = phone,
+            phoneError = phoneError,
+            isDataValid = phoneError == null && _singUpExtendedFormState.value?.userNameError == null
+        )
+    }
+
+    fun updateUserNameFormField(userName: String) {
+        val validationResult = validateUsername(userName)
+        val userNameError = getValidationResultMessage(validationResult)
+        _singUpExtendedFormState.value = _singUpExtendedFormState.value?.copy(
+            userName = userName,
+            userNameError = userNameError,
+            isDataValid = userNameError == null && _singUpExtendedFormState.value?.phoneError == null
+        )
     }
 
     fun resetRegistrationState() {
-        _requestState.postValue(RequestState.Initial)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        _requestState.postValue(RequestState.Initial)
+        _responseState.postValue(ResponseState.Initial)
     }
 }

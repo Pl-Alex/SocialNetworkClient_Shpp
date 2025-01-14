@@ -45,8 +45,8 @@ android {
 
 dependencies {
 
-    implementation(projects.core.datastore)
     implementation(projects.core.contactsprovider)
+    implementation(projects.core.datastore)
     implementation(projects.core.textvalidation)
     implementation(projects.core.webapi)
 
